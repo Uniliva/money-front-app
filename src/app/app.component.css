@@ -22,11 +22,11 @@
   width: 140px;
 }
 
-.pesquisar {
+.btn-pesquisar {
   margin-left: 15px;
 }
 
-.ajuste {
-    justify-content: stretch !important;
-}
+.btn-lacamento {
+  justify-content: flex-end;
 
+}
