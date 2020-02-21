@@ -1,0 +1,32 @@
+/* tabela */
+
+/* Tabela */
+.col-acao-size{
+  width: 80px;
+}
+
+
+.tabela {
+  height: 728px;
+  overflow: auto;
+}
+
+/*
+------------- */
+
+.inpt-descricao {
+  width: 80%;
+}
+
+.inpt-datas {
+  width: 140px;
+}
+
+.pesquisar {
+  margin-left: 15px;
+}
+
+.ajuste {
+    justify-content: stretch !important;
+}
+
