@@ -1,0 +1,26 @@
+/* tabela */
+
+/* Tabela */
+.col-acao-size{
+  width: 80px;
+}
+
+/*
+------------- */
+
+.inpt-descricao {
+  width: 80%;
+}
+
+.inpt-datas {
+  width: 140px;
+}
+
+.btn-pesquisar {
+  margin-left: 15px;
+}
+
+.btn-lacamento {
+  justify-content: flex-end;
+
+}

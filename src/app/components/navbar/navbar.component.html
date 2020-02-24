@@ -1,0 +1,35 @@
+<div>
+  <mat-toolbar color="primary" class="c_toolbar">
+    <button mat-icon-button (click)="snav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h2>Responsive App</h2>
+
+    <div  class="c_toolbar_direita">
+      <h4 class="c_user"> Adminstrador </h4>
+    </div>
+
+
+
+  </mat-toolbar>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav mode="side" #snav class="sidenav-content">
+      <mat-nav-list>
+        <mat-list-item>
+          <mat-icon matListIcon>assessment</mat-icon> Lançamentos
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon matListIcon>supervised_user_circle</mat-icon> Pessoas
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon matListIcon>exit_to_app</mat-icon> Logout
+        </mat-list-item>
+
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <ng-content></ng-content>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

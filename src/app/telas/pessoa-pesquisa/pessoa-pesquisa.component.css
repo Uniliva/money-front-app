@@ -1,0 +1,19 @@
+/* tabela */
+
+/* Tabela */
+.col-acao-size{
+  width: 80px;
+}
+
+/*
+------------- */
+
+.inpt-descricao {
+  width: 80%;
+}
+
+
+.btns {
+  display: flex;
+    justify-content: space-between;
+}

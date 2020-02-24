@@ -1,0 +1,29 @@
+
+.c_toolbar{
+  position: fixed;
+  z-index: ;
+}
+
+.sidenav-container{
+  position: absolute;
+  top: 64px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+}
+
+.sidenav-content {
+  background-color:rgb(126, 75, 214);
+  width: 200px;
+}
+
+.c_toolbar_direita{
+  flex: 1 1 auto;
+}
+
+
+.c_user{
+  display: flex;
+  justify-content: flex-end;
+}
