@@ -14,13 +14,11 @@
 
 .inpt-datas {
   width: 140px;
+  padding-right: 10px;
 }
 
-.btn-pesquisar {
-  margin-left: 15px;
+.btns {
+  display: flex;
+    justify-content: space-between;
 }
 
-.btn-lacamento {
-  justify-content: flex-end;
-
-}
