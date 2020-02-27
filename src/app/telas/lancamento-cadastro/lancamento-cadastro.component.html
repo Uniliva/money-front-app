@@ -1,0 +1,96 @@
+<div class="caixa">
+  <div class="centralizado">
+
+    <h1>Novo lançamentos</h1>
+
+    <form (ngSubmit)="salvar()">
+
+<!--
+      {{lancamento | json}} -->
+
+      <div class="ajuste">
+        <mat-button-toggle-group  appearance="legacy" name="tipo-lancamento" [(ngModel)]="lancamento.tipo">
+          <mat-button-toggle value="Receita">
+            Receita
+          </mat-button-toggle>
+          <mat-button-toggle value="Despesa">
+            Despesa
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      <br>
+
+      <div class="ajuste">
+        <mat-form-field class="espaco ipt-data">
+          <mat-label>Vencimento:</mat-label>
+          <input matInput  [matDatepicker]="dataVenciemnto" name="dataVenciemnto" [(ngModel)]="lancamento.dataVencimento">
+          <mat-datepicker-toggle matSuffix [for]="dataVenciemnto"></mat-datepicker-toggle>
+          <mat-datepicker #dataVenciemnto></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="ipt-data" >
+          <mat-label> {{lancamento.tipo =='Receita' ? 'Recebimento' : 'Pagamento'}}:</mat-label>
+          <input matInput [matDatepicker]="dataRecebimento" name="dataRecebimento" [(ngModel)]="lancamento.dataRecebimento">
+          <mat-datepicker-toggle matSuffix [for]="dataRecebimento"></mat-datepicker-toggle>
+          <mat-datepicker #dataRecebimento></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="ajuste">
+        <mat-form-field class="ipt-descricao">
+          <mat-label>Descrição:</mat-label>
+          <input matInput  name="descricao" [(ngModel)]="lancamento.descricao" />
+        </mat-form-field>
+
+        <mat-form-field class="ipt-valor">
+          <mat-label>Valor:</mat-label>
+          <input matInput  currencyMask name="valor" [(ngModel)]="lancamento.valor" />
+        </mat-form-field>
+      </div>
+
+      <div class="ajuste">
+        <mat-form-field class="espaco ajuste-espaco">
+          <mat-label>Categoria:</mat-label>
+          <mat-select [(value)]="lancamento.categoria">
+            <mat-option>Selecione</mat-option>
+            <mat-option *ngFor="let categoria of categorias"  [value]="categoria">{{categoria}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="ajuste-espaco">
+          <mat-label>Pessoa:</mat-label>
+          <mat-select [(value)]="lancamento.pessoa">
+            <mat-option>Selecione</mat-option>
+            <mat-option *ngFor="let pessoa of pessoas"  [value]="pessoa">{{pessoa.nome}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="ajuste">
+        <mat-form-field class="obs">
+          <mat-label>Observação:</mat-label>
+          <textarea matInput  name="observacao" [(ngModel)]="lancamento.observacao"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="ajuste">
+
+        <button mat-raised-button color="warn" >
+          <mat-icon>arrow_back</mat-icon> voltar
+        </button>
+
+        <button mat-raised-button color="primary">
+          <mat-icon>add</mat-icon> Novo
+        </button>
+
+        <button mat-raised-button color="accent">
+          <mat-icon>save</mat-icon> Salvar
+        </button>
+
+      </div>
+
+
+    </form>
+
+  </div>
+</div>
