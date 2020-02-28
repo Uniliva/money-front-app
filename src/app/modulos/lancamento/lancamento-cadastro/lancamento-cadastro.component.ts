@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Lancamento } from 'src/app/entidades/lancamento';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+
 
 @Component({
   selector: 'app-lancamento-cadastro',
@@ -8,7 +9,7 @@ import { Lancamento } from 'src/app/entidades/lancamento';
 })
 export class LancamentoCadastroComponent implements OnInit {
 
-  lancamento = new Lancamento();
+  formularioLancamento: FormGroup;
 
   categorias = ['Compra', 'Venda', 'Aluguel'];
 
@@ -21,18 +22,27 @@ export class LancamentoCadastroComponent implements OnInit {
     { nome: 'Paula Maria', cidade: 'Uberlândia', estado: 'MG', ativo: true }
   ]
 
-  constructor() { }
+  constructor(private fb: FormBuilder) { }
 
 
 
   ngOnInit(): void {
 
-    // inicializando objeto
-    this.lancamento.tipo = 'Receita';
+    this.formularioLancamento = this.fb.group({
+        tipo: ['Receita' , null],
+        dataVencimento : [ null , Validators.required],
+        data2 : [ null , Validators.required],
+        descricao : [ null , [Validators.minLength(5), Validators.required]],
+        valor : [ null , Validators.required],
+        categoria : [ null , Validators.required],
+        pessoa : [ null , Validators.required],
+        observacao : [ null , null]
+    });
   }
 
 
   salvar() {
+    // this.formularioLancamento.value  Para passar o valores
 
   }
 

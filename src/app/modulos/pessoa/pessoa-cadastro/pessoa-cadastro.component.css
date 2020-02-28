@@ -1,0 +1,71 @@
+.ajuste {
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: row wrap;
+}
+
+.ajuste2 {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: row wrap;
+}
+
+.obs {
+  width: 100%;
+}
+
+.ipt-nome {
+  width: 100%;
+}
+
+@media (min-width: 641px) {
+  .espaco {
+    padding-right: 1%;
+  }
+
+  .ipt-infos {
+    width: 32.6%;
+  }
+
+
+  .ipt-infos2 {
+    width: 49.5%;
+  }
+
+  .ipt-logradouro {
+    width: 80%;
+  }
+
+  .ipt-numero {
+    width: 19%;
+  }
+
+  .ipt-data {
+    width: 130px;
+  }
+}
+
+button {
+  margin: 10px;
+}
+
+@media (max-width: 641px) {
+  .ipt-nome,
+  .ipt-logradouro,
+  .ipt-numero,
+  .ajuste-espaco ,
+  .ipt-infos,
+  .ipt-infos2 {
+    width: 100%;
+  }
+  .ajuste , .ajuste2 {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  button {
+    width: 100%;
+  }
+}

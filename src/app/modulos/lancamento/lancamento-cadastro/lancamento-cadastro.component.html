@@ -1,0 +1,108 @@
+<div class="caixa">
+  <div class="centralizado">
+
+    <h1>Novo lançamentos</h1>
+
+    <form [formGroup]="formularioLancamento" (ngSubmit)="salvar()">
+
+      <div class="ajuste">
+        <mat-button-toggle-group appearance="legacy" name="tipo-lancamento" formControlName="tipo">
+          <mat-button-toggle value="Receita">
+            Receita
+          </mat-button-toggle>
+          <mat-button-toggle value="Despesa">
+            Despesa
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      <br>
+
+      <div class="ajuste">
+        <mat-form-field class="espaco ipt-data">
+          <mat-label>Vencimento:</mat-label>
+          <input matInput [matDatepicker]="dataVenciemnto" name="dataVenciemnto" formControlName="dataVencimento">
+          <mat-datepicker-toggle matSuffix [for]="dataVenciemnto"></mat-datepicker-toggle>
+          <mat-datepicker #dataVenciemnto></mat-datepicker>
+          <mat-error *ngIf="formularioLancamento.controls.dataVencimento.hasError('required')">Campo
+            <strong>Obrigatório.</strong></mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="ipt-data">
+          <mat-label> {{formularioLancamento.controls.tipo.value =='Receita' ? 'Recebimento' : 'Pagamento'}}:
+          </mat-label>
+          <input matInput [matDatepicker]="dataRecebimento" name="dataRecebimento" formControlName="data2">
+          <mat-datepicker-toggle matSuffix [for]="dataRecebimento"></mat-datepicker-toggle>
+          <mat-datepicker #dataRecebimento></mat-datepicker>
+          <mat-error *ngIf="formularioLancamento.controls.data2.hasError('required')">Campo
+            <strong>Obrigatório.</strong></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="ajuste">
+        <mat-form-field class="ipt-descricao">
+          <mat-label>Descrição:</mat-label>
+          <input matInput name="descricao" formControlName="descricao" />
+          <mat-error *ngIf="formularioLancamento.controls.descricao.hasError('minlength')">Campo deve ter no minimo
+            {{formularioLancamento.controls.descricao.errors.minlength.requiredLength}} caracteres </mat-error>
+          <mat-error *ngIf="formularioLancamento.controls.descricao.hasError('required')">Campo
+            <strong>Obrigatório.</strong></mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="ipt-valor">
+          <mat-label>Valor:</mat-label>
+          <input matInput currencyMask name="valor" formControlName="valor" />
+          <mat-error *ngIf="formularioLancamento.controls.valor.hasError('required')">Campo
+            <strong>Obrigatório.</strong></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="ajuste">
+        <mat-form-field class="espaco ajuste-espaco">
+          <mat-label>Categoria:</mat-label>
+          <mat-select formControlName="categoria">
+            <mat-option>Selecione</mat-option>
+            <mat-option *ngFor="let categoria of categorias" [value]="categoria">{{categoria}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="formularioLancamento.controls.categoria.hasError('required')">Campo
+            <strong>Obrigatório.</strong></mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="ajuste-espaco">
+          <mat-label>Pessoa:</mat-label>
+          <mat-select formControlName="pessoa">
+            <mat-option>Selecione</mat-option>
+            <mat-option *ngFor="let pessoa of pessoas" [value]="pessoa">{{pessoa.nome}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="formularioLancamento.controls.pessoa.hasError('required')">Campo
+            <strong>Obrigatório.</strong></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="ajuste">
+        <mat-form-field class="obs">
+          <mat-label>Observação:</mat-label>
+          <textarea matInput name="observacao" formControlName="observacao"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="ajuste">
+
+        <button mat-raised-button color="warn" (click)="log(formularioLancamento)">
+          <mat-icon>arrow_back</mat-icon> voltar
+        </button>
+
+        <button mat-raised-button color="primary">
+          <mat-icon>add</mat-icon> Novo
+        </button>
+
+        <button mat-raised-button color="accent" [disabled]="formularioLancamento.invalid">
+          <mat-icon>save</mat-icon> Salvar
+        </button>
+
+      </div>
+
+
+    </form>
+
+  </div>
+</div>
