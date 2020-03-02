@@ -3,23 +3,23 @@
     <div>
       <h1>Lançamentos</h1>
 
-      <form>
+      <form [formGroup]="formularioPesquisa">
         <mat-form-field class="inpt-descricao">
           <mat-label>Descrição</mat-label>
-          <input matInput />
+          <input matInput name="descricao" formControlName="descricao" />
         </mat-form-field>
 
         <div>
           <mat-form-field class="inpt-datas">
             <mat-label>Vencimento de:</mat-label>
-            <input matInput [matDatepicker]="dataVenciemntoDe">
+            <input matInput [matDatepicker]="dataVenciemntoDe" name="dataVenciemntoDe" formControlName="dataVenciemntoDe" >
             <mat-datepicker-toggle matSuffix [for]="dataVenciemntoDe"></mat-datepicker-toggle>
             <mat-datepicker #dataVenciemntoDe></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field class="inpt-datas">
             <mat-label>ate:</mat-label>
-            <input matInput [matDatepicker]="dataVenciemntoAte">
+            <input matInput [matDatepicker]="dataVenciemntoAte" name="dataVenciemntoAte" formControlName="dataVenciemntoAte" >
             <mat-datepicker-toggle matSuffix [for]="dataVenciemntoAte"></mat-datepicker-toggle>
             <mat-datepicker #dataVenciemntoAte></mat-datepicker>
           </mat-form-field>

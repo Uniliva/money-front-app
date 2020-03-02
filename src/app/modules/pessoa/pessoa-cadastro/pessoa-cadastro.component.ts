@@ -1,6 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { Lancamento } from "src/app/entidades/lancamento";
-import { Pessoa } from "src/app/entidades/pessoa";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 
 @Component({
