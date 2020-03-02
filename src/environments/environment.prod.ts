@@ -1,3 +1,7 @@
 export const environment = {
-  production: true
+  production: true,
+  base_url: '/api'
 };
+
+
+// TODO: Ajustar depois

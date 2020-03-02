@@ -1,3 +1,4 @@
+import { LancamentoService } from './../lancamento.service';
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { Component, OnInit, ViewChild } from "@angular/core";
 
@@ -12,7 +13,9 @@ import { MatTableDataSource } from "@angular/material/table";
 export class LancamentoPesquisaComponent implements OnInit {
   formularioPesquisa: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private _lacamentoService : LancamentoService) {}
+
+  dados = [];
 
   colunas: string[] = [
     "pessoa",
@@ -22,7 +25,7 @@ export class LancamentoPesquisaComponent implements OnInit {
     "valor",
     "acoes"
   ];
-  datasource = new MatTableDataSource(dados);
+  datasource = new MatTableDataSource(this.dados);
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -34,64 +37,13 @@ export class LancamentoPesquisaComponent implements OnInit {
     });
 
     this.datasource.paginator = this.paginator;
+
+    this._lacamentoService.buscarResumo()
+    .subscribe(
+      (data) => this.dados = data['content'],
+      (error) => `Erro ao buscar resumo dos lançamentos`
+   )
   }
 }
 
-const dados = [
-  {
-    tipo: "DESPESA",
-    descricao: "Compra de pão",
-    dataVencimento: new Date(2017, 5, 30),
-    dataPagamento: null,
-    valor: 4.55,
-    pessoa: "Padaria do José"
-  },
-  {
-    tipo: "RECEITA",
-    descricao: "Venda de software",
-    dataVencimento: new Date(2017, 5, 10),
-    dataPagamento: new Date(2017, 5, 30),
-    valor: 80000,
-    pessoa: "Atacado Brasil"
-  },
-  {
-    tipo: "DESPESA",
-    descricao: "Impostos",
-    dataVencimento: new Date(2017, 6, 20),
-    dataPagamento: null,
-    valor: 14312,
-    pessoa: "Ministério da Fazenda"
-  },
-  {
-    tipo: "DESPESA",
-    descricao: "Mensalidade de escola",
-    dataVencimento: new Date(2017, 5, 5),
-    dataPagamento: new Date(2017, 4, 30),
-    valor: 800,
-    pessoa: "Escola Abelha Rainha"
-  },
-  {
-    tipo: "RECEITA",
-    descricao: "Venda de carro",
-    dataVencimento: new Date(2017, 7, 18),
-    dataPagamento: null,
-    valor: 55000,
-    pessoa: "Sebastião Souza"
-  },
-  {
-    tipo: "DESPESA",
-    descricao: "Aluguel",
-    dataVencimento: new Date(2017, 6, 10),
-    dataPagamento: new Date(2017, 6, 9),
-    valor: 1750,
-    pessoa: "Casa Nova Imóveis"
-  },
-  {
-    tipo: "DESPESA",
-    descricao: "Mensalidade musculação",
-    dataVencimento: new Date(2017, 6, 13),
-    dataPagamento: null,
-    valor: 180,
-    pessoa: "Academia Top"
-  }
-];
+
