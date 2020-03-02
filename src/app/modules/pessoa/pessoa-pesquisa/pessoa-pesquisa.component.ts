@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { PessoaService } from '../pessoa.service';
 
 
 @Component({
@@ -9,24 +11,35 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './pessoa-pesquisa.component.html',
   styleUrls: ['./pessoa-pesquisa.component.css']
 })
-export class PessoaPesquisaComponent  implements OnInit {
+export class PessoaPesquisaComponent implements OnInit {
 
+  constructor(private fb: FormBuilder, private pessoaService: PessoaService) { }
+
+  formularioPessoaPesquisa: FormGroup;
+  dados: any;
   colunas: string[] = ['nome', 'cidade', 'estado', 'ativo', 'acoes'];
-  datasource = new MatTableDataSource(dados);
+
+  datasource = new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   ngOnInit() {
-    this.datasource.paginator = this.paginator;
+    this.formularioPessoaPesquisa = this.fb.group({
+      nome: ['']
+    })
+
+    this.pessoaService.buscaTodos()
+      .subscribe((data: any) => {
+        this.datasource = new MatTableDataSource(data);
+        this.datasource.paginator = this.paginator;
+      },
+        error => console.log("Ocorreu um erro ao listar pessoas"));
+  }
+
+  aplicarFiltror(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.datasource.filter = filterValue.trim().toLowerCase();
   }
 
 }
 
-const dados = [
-  { nome: 'Manoel Pinheiro', cidade: 'Uberlândia', estado: 'MG', ativo: true },
-  { nome: 'Sebastião da Silva', cidade: 'São Paulo', estado: 'SP', ativo: false },
-  { nome: 'Carla Souza', cidade: 'Florianópolis', estado: 'SC', ativo: true },
-  { nome: 'Luís Pereira', cidade: 'Curitiba', estado: 'PR', ativo: true },
-  { nome: 'Vilmar Andrade', cidade: 'Rio de Janeiro', estado: 'RJ', ativo: false },
-  { nome: 'Paula Maria', cidade: 'Uberlândia', estado: 'MG', ativo: true }
-];

@@ -5,15 +5,45 @@
   width: 80px;
 }
 
-/*
-------------- */
-
-.inpt-descricao {
-  width: 80%;
+#container_maior {
+ display: flex;
+ justify-content: center;
+ flex-wrap: wrap;
 }
 
+#container_filtro mat-form-field  {
+  width: 100%;
+}
 
-.btns {
-  display: flex;
-    justify-content: space-between;
+@media (min-width: 641px) {
+  #container_filtro {
+    width: 60%;
+
+  }
+
+
+  #container_paginacao {
+    width: 40%;
+
+  }
+
+}
+
+@media (max-width: 641px) {
+  #container_filtro {
+    width: 100%;
+    box-sizing: content-box;
+    padding-left: 10px;
+    padding-right: 10px;
+
+  }
+
+  .mat-form-field  {
+    width: 100%;
+  }
+  #container_paginacao {
+    width: 100%;
+
+  }
+
 }
