@@ -1,0 +1,12 @@
+h2 {
+  color: #F44336;
+  padding: 0px;
+  margin: 0 auto;
+  font-size: 16pt;
+}
+
+
+.ajuste {
+  display: flex;
+  justify-content: flex-end;
+}

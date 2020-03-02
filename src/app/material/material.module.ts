@@ -16,6 +16,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatSelectModule} from '@angular/material/select';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 const material = [
   MatTableModule,
@@ -33,7 +35,9 @@ const material = [
   MatSidenavModule,
   MatListModule,
   MatButtonToggleModule,
-  MatSelectModule
+  MatSelectModule,
+  MatDialogModule,
+  MatSnackBarModule
 ];
 
 
