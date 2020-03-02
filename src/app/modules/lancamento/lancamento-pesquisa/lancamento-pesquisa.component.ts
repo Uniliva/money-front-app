@@ -1,9 +1,10 @@
-import { LancamentoService } from './../lancamento.service';
+import { LancamentoService } from "./../lancamento.service";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { Component, OnInit, ViewChild } from "@angular/core";
 
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
+import { FiltroLancamento } from 'src/app/shared/models/filtro-lancamento';
 
 @Component({
   selector: "app-lancamento-pesquisa",
@@ -13,9 +14,13 @@ import { MatTableDataSource } from "@angular/material/table";
 export class LancamentoPesquisaComponent implements OnInit {
   formularioPesquisa: FormGroup;
 
-  constructor(private fb: FormBuilder, private _lacamentoService : LancamentoService) {}
+  constructor(
+    private fb: FormBuilder,
+    private _lacamentoService: LancamentoService
+  ) {}
 
   dados = [];
+  datasource = new MatTableDataSource();
 
   colunas: string[] = [
     "pessoa",
@@ -25,25 +30,46 @@ export class LancamentoPesquisaComponent implements OnInit {
     "valor",
     "acoes"
   ];
-  datasource = new MatTableDataSource(this.dados);
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   ngOnInit() {
     this.formularioPesquisa = this.fb.group({
-      descricao: [null, null],
-      dataVenciemntoDe: [null, null],
-      dataVenciemntoAte: [null, null]
+      descricao: [''],
+      dataVencimentoAte: [''],
+      dataVencimentoDe: ['']
     });
 
-    this.datasource.paginator = this.paginator;
+    let filtro = this.montarFiltro();
+    filtro.pagina = 0;
+    filtro.tamanho = 5;
 
-    this._lacamentoService.buscarResumo()
-    .subscribe(
-      (data) => this.dados = data['content'],
-      (error) => `Erro ao buscar resumo dos lançamentos`
-   )
+    this.buscarResumo(filtro);
+    this.datasource.paginator = this.paginator;
+  }
+
+  pesquisar(){
+    this.buscarResumo(this.montarFiltro());
+  }
+
+  private buscarResumo(filtro:FiltroLancamento) {
+    this._lacamentoService.buscarResumo(filtro).subscribe(data => {
+      this.datasource = new MatTableDataSource(data.content);
+      this.paginator.length = data.totalElements;
+      this.paginator.pageSize = data.size;
+    });
+  }
+
+  private montarFiltro() : FiltroLancamento {
+    let form = this.formularioPesquisa.value;
+    var filtro = new FiltroLancamento();
+
+    filtro.pagina = this.paginator.pageIndex;
+    filtro.tamanho = this.paginator.pageSize;
+    filtro.dataLancamentoAte = form.dataVencimentoAte;
+    filtro.dataLancamentoDe =  form.dataVencimentoDe;
+    filtro.descricao =  form.descricao;
+
+    return filtro
   }
 }
-
-

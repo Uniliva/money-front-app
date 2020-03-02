@@ -1,13 +1,16 @@
 import { environment } from './../../../environments/environment.prod';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { FiltroLancamento } from 'src/app/shared/models/filtro-lancamento';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LancamentoService {
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient,private datePipe: DatePipe) { }
 
   getHeaders(){
     return new HttpHeaders({
@@ -18,7 +21,27 @@ export class LancamentoService {
 
 
 
-  buscarResumo(){
-    return this._http.get(`${environment.base_url}/lancamentos?resumo`, { headers: this.getHeaders() })
+  buscarResumo(filtro:FiltroLancamento):Observable<any>{
+    let params = new HttpParams();
+    const headers = this.getHeaders()
+
+    params = params.append('size',filtro.tamanho.toString());
+    params = params.append('page',filtro.pagina.toString());
+
+    if(filtro.dataLancamentoDe)
+      params = params.append('dataLancamentoDe',this.converteData(filtro.dataLancamentoDe));
+
+    if(filtro.dataLancamentoAte)
+      params = params.append('dataLancamentoAte',this.converteData(filtro.dataLancamentoAte));
+
+    if(filtro.descricao)
+      params = params.append('descricao',filtro.descricao.toLowerCase());
+
+    return this._http.get(`${environment.base_url}/lancamentos?resumo`, { headers, params});
+  }
+
+
+  private converteData(data:Date){
+    return this.datePipe.transform(data,'dd-MM-yyyy').toString();
   }
 }

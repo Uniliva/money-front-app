@@ -12,22 +12,22 @@
         <div>
           <mat-form-field class="inpt-datas">
             <mat-label>Vencimento de:</mat-label>
-            <input matInput [matDatepicker]="dataVenciemntoDe" name="dataVenciemntoDe" formControlName="dataVenciemntoDe" >
-            <mat-datepicker-toggle matSuffix [for]="dataVenciemntoDe"></mat-datepicker-toggle>
-            <mat-datepicker #dataVenciemntoDe></mat-datepicker>
+            <input matInput [matDatepicker]="dataVencimentoDe" name="dataVencimentoDe" formControlName="dataVencimentoDe" >
+            <mat-datepicker-toggle matSuffix [for]="dataVencimentoDe"></mat-datepicker-toggle>
+            <mat-datepicker #dataVencimentoDe></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field class="inpt-datas">
             <mat-label>ate:</mat-label>
-            <input matInput [matDatepicker]="dataVenciemntoAte" name="dataVenciemntoAte" formControlName="dataVenciemntoAte" >
-            <mat-datepicker-toggle matSuffix [for]="dataVenciemntoAte"></mat-datepicker-toggle>
-            <mat-datepicker #dataVenciemntoAte></mat-datepicker>
+            <input matInput [matDatepicker]="dataVencimentoAte" name="dataVencimentoAte" formControlName="dataVencimentoAte" >
+            <mat-datepicker-toggle matSuffix [for]="dataVencimentoAte"></mat-datepicker-toggle>
+            <mat-datepicker #dataVencimentoAte></mat-datepicker>
           </mat-form-field>
         </div>
 
         <div class="btns">
 
-          <button mat-raised-button color="accent">
+          <button mat-raised-button color="accent" (click)="pesquisar()">
             <mat-icon>search</mat-icon> Pesquisar
           </button>
 
@@ -47,7 +47,7 @@
 
     <!-- tabela -->
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" ></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons (page)="pesquisar()" ></mat-paginator>
 
     <div class="tabela mat-elevation-z8">
       <table mat-table [dataSource]="datasource">

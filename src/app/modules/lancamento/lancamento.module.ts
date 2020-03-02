@@ -1,6 +1,6 @@
-import { LancamentoService } from './lancamento.service';
+
 import { NgModule, LOCALE_ID } from '@angular/core';
-import { registerLocaleData, CommonModule } from '@angular/common';
+import { registerLocaleData, CommonModule, DatePipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import localePt from '@angular/common/locales/pt';
@@ -9,7 +9,6 @@ import { NgxCurrencyModule } from 'ngx-currency';
 import { LancamentoCadastroComponent } from './lancamento-cadastro/lancamento-cadastro.component';
 import { LancamentoPesquisaComponent } from './lancamento-pesquisa/lancamento-pesquisa.component';
 import { MaterialModule } from 'src/app/material/material.module';
-import { HttpClient } from '@angular/common/http';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -41,7 +40,8 @@ export const customCurrencyMaskConfig = {
     LancamentoPesquisaComponent
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'pt-BR' }
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
+    DatePipe
   ]
 })
 export class LancamentoModule { }
