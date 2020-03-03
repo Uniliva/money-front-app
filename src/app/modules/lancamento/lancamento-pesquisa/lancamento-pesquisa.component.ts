@@ -9,6 +9,7 @@ import { FiltroLancamento } from 'src/app/shared/models/filtro-lancamento';
 import { NotificacaoService } from 'src/app/core/services/notificacao.service';
 import { ModalConfirmacaoComponent } from 'src/app/core/componentes/modal-confirmacao/modal-confirmacao.component';
 import { LancamentoService } from "./../lancamento.service";
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-lancamento-pesquisa",
@@ -19,8 +20,11 @@ export class LancamentoPesquisaComponent implements OnInit {
   formularioPesquisa: FormGroup;
 
   constructor(
-    private fb: FormBuilder,
-    private _lacamentoService: LancamentoService, public dialog: MatDialog, private notificador: NotificacaoService
+    private _fb: FormBuilder,
+    private _lacamentoService: LancamentoService,
+    public _dialog: MatDialog,
+    private _notificador: NotificacaoService,
+    private _rota: Router
   ) { }
 
   dados = [];
@@ -38,7 +42,7 @@ export class LancamentoPesquisaComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   ngOnInit() {
-    this.formularioPesquisa = this.fb.group({
+    this.formularioPesquisa = this._fb.group({
       descricao: [''],
       dataVencimentoAte: [''],
       dataVencimentoDe: ['']
@@ -57,7 +61,7 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   remover(lancamento) {
-    const dialogRef = this.dialog.open(ModalConfirmacaoComponent, {
+    const dialogRef = this._dialog.open(ModalConfirmacaoComponent, {
       width: '350px',
       data: { titulo: 'Remover lançamento!', msg: `Deseja remover o lançamento ${lancamento.descricao} ?` }
     });
@@ -66,12 +70,16 @@ export class LancamentoPesquisaComponent implements OnInit {
       if (result) {
         this._lacamentoService.removerPorCodigo(lancamento.codigo)
           .subscribe(res => {
-            this.notificador.notificarSucesso(`${lancamento.descricao} removido com sucesso.`);
+            this._notificador.notificarSucesso(`${lancamento.descricao} removido com sucesso.`);
             this.pesquisar();
           });
       }
 
     });
+  }
+
+  novoLancamento(){
+    this._rota.navigate(['lancamento/novo']);
   }
 
   private buscarResumo(filtro: FiltroLancamento) {

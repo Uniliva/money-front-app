@@ -1,6 +1,6 @@
 export class Pessoa {
   nome: string;
-  endereco: Endereco;
+  endereco: Endereco = new Endereco();
   ativo: boolean;
 }
 

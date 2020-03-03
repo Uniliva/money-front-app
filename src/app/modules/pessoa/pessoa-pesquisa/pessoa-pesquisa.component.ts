@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PessoaService } from '../pessoa.service';
 import { ModalConfirmacaoComponent } from 'src/app/core/componentes/modal-confirmacao/modal-confirmacao.component';
 import { NotificacaoService } from 'src/app/core/services/notificacao.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -17,7 +18,12 @@ import { NotificacaoService } from 'src/app/core/services/notificacao.service';
 })
 export class PessoaPesquisaComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private pessoaService: PessoaService, public dialog: MatDialog, private notificador: NotificacaoService) { }
+  constructor(
+    private _fb: FormBuilder,
+    private _pessoaService: PessoaService,
+    public _dialog: MatDialog,
+    private _notificador: NotificacaoService,
+    private _rota: Router) { }
 
   formularioPessoaPesquisa: FormGroup;
   dados: any;
@@ -28,7 +34,7 @@ export class PessoaPesquisaComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   ngOnInit() {
-    this.formularioPessoaPesquisa = this.fb.group({
+    this.formularioPessoaPesquisa = this._fb.group({
       nome: ['']
     })
     this.listarPessoas();
@@ -40,16 +46,16 @@ export class PessoaPesquisaComponent implements OnInit {
   }
 
   remover(pessoa) {
-    const dialogRef = this.dialog.open(ModalConfirmacaoComponent, {
+    const dialogRef = this._dialog.open(ModalConfirmacaoComponent, {
       width: '350px',
       data: { titulo: 'Remover pessoa!', msg: `Deseja remover ${pessoa.nome} ?` }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.pessoaService.removerPorCodigo(pessoa.codigo)
+        this._pessoaService.removerPorCodigo(pessoa.codigo)
           .subscribe(res => {
-            this.notificador.notificarSucesso(`${pessoa.nome} removido com sucesso.`);
+            this._notificador.notificarSucesso(`${pessoa.nome} removido com sucesso.`);
             this.listarPessoas();
           });
       }
@@ -58,7 +64,7 @@ export class PessoaPesquisaComponent implements OnInit {
   }
 
   listarPessoas() {
-    this.pessoaService.buscaTodos()
+    this._pessoaService.buscaTodos()
       .subscribe((data: any) => {
         this.datasource = new MatTableDataSource(data);
         this.datasource.paginator = this.paginator;
@@ -66,11 +72,15 @@ export class PessoaPesquisaComponent implements OnInit {
   }
 
   ativarOuDesativar(pessoa) {
-    this.pessoaService.ativarOuDesativar(pessoa.codigo, pessoa.ativo)
+    this._pessoaService.ativarOuDesativar(pessoa.codigo, pessoa.ativo)
       .subscribe((data: any) => {
-        this.notificador.notificarSucesso(`Alterado status de ${pessoa.nome}.`);
+        this._notificador.notificarSucesso(`Alterado status de ${pessoa.nome}.`);
         this.listarPessoas();
       })
+  }
+
+  novaPessoa(){
+    this._rota.navigate(['pessoa/nova']);
   }
 }
 

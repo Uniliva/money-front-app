@@ -8,6 +8,7 @@ import { CoreModule } from './core/core.module';
 import { PessoaModule } from './modules/pessoa/pessoa.module';
 import { LancamentoModule } from './modules/lancamento/lancamento.module';
 import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [

@@ -6,6 +6,7 @@ import { CategoriaService } from '../categoria.service';
 import { PessoaService } from '../../pessoa/pessoa.service';
 import { Lancamento } from 'src/app/shared/models/lancamento';
 import { UtilsService } from 'src/app/core/services/utils.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -16,12 +17,13 @@ import { UtilsService } from 'src/app/core/services/utils.service';
 export class LancamentoCadastroComponent implements OnInit {
 
   constructor(
-    private fb: FormBuilder,
+    private _fb: FormBuilder,
     private _lacamentoService: LancamentoService,
     private _categoriaService: CategoriaService,
     private _pessoaService: PessoaService,
     private _notificador: NotificacaoService,
-    private _utilsService: UtilsService) { }
+    private _utilsService: UtilsService,
+    private _rota: Router) { }
 
   formularioLancamento: FormGroup;
   categorias: any;
@@ -42,7 +44,7 @@ export class LancamentoCadastroComponent implements OnInit {
           this._notificador.notificarSucesso("Lançamento salvo com sucesso!")
           this.formularioLancamento.reset();
           Object.keys(this.formularioLancamento.controls).forEach(key => {
-            this.formularioLancamento.get(key).setErrors(null) ;
+            this.formularioLancamento.get(key).setErrors(null);
           });
         }
       )
@@ -63,8 +65,28 @@ export class LancamentoCadastroComponent implements OnInit {
       )
   }
 
-  carregaFormulario(){
-    this.formularioLancamento = this.fb.group({
+  voltar() {
+    this._rota.navigate(['lancamentos']);
+  }
+
+  private gerarBody() {
+    let lancamento: Lancamento = new Lancamento()
+    let form = this.formularioLancamento.value;
+
+    lancamento.descricao = form.descricao;
+    lancamento.dataVencimento = this._utilsService.converteDataComBarra(form.dataVencimento);
+    lancamento.dataPagamento = this._utilsService.converteDataComBarra(form.dataPagamento);
+    lancamento.valor = form.valor;
+    lancamento.observacao = form.observacao;
+    lancamento.tipo = form.tipo;
+    lancamento.categoria = form.categoria;
+    lancamento.pessoa = form.pessoa;
+
+    return lancamento;
+  }
+
+  private carregaFormulario() {
+    this.formularioLancamento = this._fb.group({
       tipo: ['RECEITA', null],
       dataVencimento: [null, Validators.required],
       dataPagamento: [null, Validators.required],
@@ -74,21 +96,5 @@ export class LancamentoCadastroComponent implements OnInit {
       pessoa: [null, Validators.required],
       observacao: [null, null]
     });
-  }
-
-  private gerarBody() {
-    let lancamento: Lancamento = new Lancamento()
-    let form = this.formularioLancamento.value;
-
-    lancamento.descricao = form.descricao;
-    lancamento.dataVencimento =  this._utilsService.converteDataComBarra(form.dataVencimento);
-    lancamento.dataPagamento =  this._utilsService.converteDataComBarra(form.dataPagamento);
-    lancamento.valor = form.valor;
-    lancamento.observacao = form.observacao;
-    lancamento.tipo = form.tipo;
-    lancamento.categoria = form.categoria;
-    lancamento.pessoa = form.pessoa;
-
-    return lancamento;
   }
 }

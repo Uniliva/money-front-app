@@ -1,7 +1,7 @@
 
 .c_toolbar{
   position: fixed;
-  z-index: ;
+  z-index: 1;
 }
 
 .sidenav-container{
@@ -26,4 +26,8 @@
 .c_user{
   display: flex;
   justify-content: flex-end;
+}
+
+.links {
+  color: white;
 }
