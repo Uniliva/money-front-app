@@ -3,14 +3,14 @@
 
     <h1>Novo lançamentos</h1>
 
-    <form [formGroup]="formularioLancamento" (ngSubmit)="salvar()">
+    <form [formGroup]="formularioLancamento" (ngSubmit)="salvar()" autocomplete="off">
 
       <div class="ajuste">
         <mat-button-toggle-group appearance="legacy" name="tipo-lancamento" formControlName="tipo">
-          <mat-button-toggle value="Receita">
+          <mat-button-toggle value="RECEITA">
             Receita
           </mat-button-toggle>
-          <mat-button-toggle value="Despesa">
+          <mat-button-toggle value="DESPESA">
             Despesa
           </mat-button-toggle>
         </mat-button-toggle-group>
@@ -30,10 +30,10 @@
         <mat-form-field class="ipt-data">
           <mat-label> {{formularioLancamento.controls.tipo.value =='Receita' ? 'Recebimento' : 'Pagamento'}}:
           </mat-label>
-          <input matInput [matDatepicker]="dataRecebimento" name="dataRecebimento" formControlName="data2">
-          <mat-datepicker-toggle matSuffix [for]="dataRecebimento"></mat-datepicker-toggle>
-          <mat-datepicker #dataRecebimento></mat-datepicker>
-          <mat-error *ngIf="formularioLancamento.controls.data2.hasError('required')">Campo
+          <input matInput [matDatepicker]="dataPagamento" name="dataPagamento" formControlName="dataPagamento">
+          <mat-datepicker-toggle matSuffix [for]="dataPagamento"></mat-datepicker-toggle>
+          <mat-datepicker #dataPagamento></mat-datepicker>
+          <mat-error *ngIf="formularioLancamento.controls.dataPagamento.hasError('required')">Campo
             <strong>Obrigatório.</strong></mat-error>
         </mat-form-field>
       </div>
@@ -61,7 +61,7 @@
           <mat-label>Categoria:</mat-label>
           <mat-select formControlName="categoria">
             <mat-option>Selecione</mat-option>
-            <mat-option *ngFor="let categoria of categorias" [value]="categoria">{{categoria}}</mat-option>
+            <mat-option *ngFor="let categoria of categorias" [value]="categoria">{{categoria.nome}}</mat-option>
           </mat-select>
           <mat-error *ngIf="formularioLancamento.controls.categoria.hasError('required')">Campo
             <strong>Obrigatório.</strong></mat-error>
@@ -87,7 +87,7 @@
 
       <div class="ajuste">
 
-        <button mat-raised-button color="warn" (click)="log(formularioLancamento)">
+        <button mat-raised-button color="warn">
           <mat-icon>arrow_back</mat-icon> voltar
         </button>
 

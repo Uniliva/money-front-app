@@ -11,15 +11,33 @@ export class NotificacaoService {
 
   constructor(private _snackBar: MatSnackBar) { }
 
-  notificar(tipo, msg) {
-    let cor = 'warn';
-    if (tipo === 'sucesso') cor = 'primary';
+  notificarSucesso(msg: string) {
+    this._snackBar.openFromComponent(ToastComponent, {
+      duration: this.durationInSeconds * 1000,
+      data: {
+        msg: msg,
+        error: false
+      }
+    });
+  }
+
+  notificarErro(erro: any) {
+
+    let msg: string;
+
+    if (erro instanceof String) {
+      msg = erro.toString();
+    } else if (erro.error.msgUsuario) {
+      msg = erro.error.msgUsuario;
+    } else {
+      msg = 'Ocorreu ao consultar serviço remoto. Tente novamente'
+    }
 
     this._snackBar.openFromComponent(ToastComponent, {
       duration: this.durationInSeconds * 1000,
       data: {
         msg: msg,
-        cor: cor
+        error: true
       }
     });
   }

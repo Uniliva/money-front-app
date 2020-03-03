@@ -1,10 +1,14 @@
-import { LancamentoService } from "./../lancamento.service";
-import { FormGroup, FormBuilder } from "@angular/forms";
 import { Component, OnInit, ViewChild } from "@angular/core";
+import { FormGroup, FormBuilder } from "@angular/forms";
 
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
+
 import { FiltroLancamento } from 'src/app/shared/models/filtro-lancamento';
+import { NotificacaoService } from 'src/app/core/services/notificacao.service';
+import { ModalConfirmacaoComponent } from 'src/app/core/componentes/modal-confirmacao/modal-confirmacao.component';
+import { LancamentoService } from "./../lancamento.service";
 
 @Component({
   selector: "app-lancamento-pesquisa",
@@ -16,8 +20,8 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private _lacamentoService: LancamentoService
-  ) {}
+    private _lacamentoService: LancamentoService, public dialog: MatDialog, private notificador: NotificacaoService
+  ) { }
 
   dados = [];
   datasource = new MatTableDataSource();
@@ -48,11 +52,29 @@ export class LancamentoPesquisaComponent implements OnInit {
     this.datasource.paginator = this.paginator;
   }
 
-  pesquisar(){
+  pesquisar() {
     this.buscarResumo(this.montarFiltro());
   }
 
-  private buscarResumo(filtro:FiltroLancamento) {
+  remover(lancamento) {
+    const dialogRef = this.dialog.open(ModalConfirmacaoComponent, {
+      width: '350px',
+      data: { titulo: 'Remover lançamento!', msg: `Deseja remover o lançamento ${lancamento.descricao} ?` }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this._lacamentoService.removerPorCodigo(lancamento.codigo)
+          .subscribe(res => {
+            this.notificador.notificarSucesso(`${lancamento.descricao} removido com sucesso.`);
+            this.pesquisar();
+          });
+      }
+
+    });
+  }
+
+  private buscarResumo(filtro: FiltroLancamento) {
     this._lacamentoService.buscarResumo(filtro).subscribe(data => {
       this.datasource = new MatTableDataSource(data.content);
       this.paginator.length = data.totalElements;
@@ -60,15 +82,15 @@ export class LancamentoPesquisaComponent implements OnInit {
     });
   }
 
-  private montarFiltro() : FiltroLancamento {
+  private montarFiltro(): FiltroLancamento {
     let form = this.formularioPesquisa.value;
     var filtro = new FiltroLancamento();
 
     filtro.pagina = this.paginator.pageIndex;
     filtro.tamanho = this.paginator.pageSize;
     filtro.dataLancamentoAte = form.dataVencimentoAte;
-    filtro.dataLancamentoDe =  form.dataVencimentoDe;
-    filtro.descricao =  form.descricao;
+    filtro.dataLancamentoDe = form.dataVencimentoDe;
+    filtro.descricao = form.descricao;
 
     return filtro
   }

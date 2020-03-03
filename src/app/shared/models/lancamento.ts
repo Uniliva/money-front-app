@@ -1,12 +1,12 @@
 import { Pessoa } from './pessoa';
 
 export class Lancamento {
-  tipo: string;
-  dataVencimento: Date;
-  dataRecebimento: Date;
   descricao: string;
-  categoria: string;
+  dataVencimento: string;
+  dataPagamento: string;
   valor: number;
-  pessoa: Pessoa;
   observacao: string;
+  tipo: string;
+  categoria: string;
+  pessoa: Pessoa;
 }

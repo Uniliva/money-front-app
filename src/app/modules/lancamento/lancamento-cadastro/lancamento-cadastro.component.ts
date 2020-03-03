@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { LancamentoService } from '../lancamento.service';
+import { NotificacaoService } from 'src/app/core/services/notificacao.service';
+import { CategoriaService } from '../categoria.service';
+import { PessoaService } from '../../pessoa/pessoa.service';
+import { Lancamento } from 'src/app/shared/models/lancamento';
+import { UtilsService } from 'src/app/core/services/utils.service';
 
 
 @Component({
@@ -9,45 +15,80 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 })
 export class LancamentoCadastroComponent implements OnInit {
 
+  constructor(
+    private fb: FormBuilder,
+    private _lacamentoService: LancamentoService,
+    private _categoriaService: CategoriaService,
+    private _pessoaService: PessoaService,
+    private _notificador: NotificacaoService,
+    private _utilsService: UtilsService) { }
+
   formularioLancamento: FormGroup;
-
-  categorias = ['Compra', 'Venda', 'Aluguel'];
-
-  pessoas = [
-    { nome: 'Manoel Pinheiro', cidade: 'Uberlândia', estado: 'MG', ativo: true },
-    { nome: 'Sebastião da Silva', cidade: 'São Paulo', estado: 'SP', ativo: false },
-    { nome: 'Carla Souza', cidade: 'Florianópolis', estado: 'SC', ativo: true },
-    { nome: 'Luís Pereira', cidade: 'Curitiba', estado: 'PR', ativo: true },
-    { nome: 'Vilmar Andrade', cidade: 'Rio de Janeiro', estado: 'RJ', ativo: false },
-    { nome: 'Paula Maria', cidade: 'Uberlândia', estado: 'MG', ativo: true }
-  ]
-
-  constructor(private fb: FormBuilder) { }
-
+  categorias: any;
+  pessoas: any;
 
 
   ngOnInit(): void {
-
-    this.formularioLancamento = this.fb.group({
-        tipo: ['Receita' , null],
-        dataVencimento : [ null , Validators.required],
-        data2 : [ null , Validators.required],
-        descricao : [ null , [Validators.minLength(5), Validators.required]],
-        valor : [ null , Validators.required],
-        categoria : [ null , Validators.required],
-        pessoa : [ null , Validators.required],
-        observacao : [ null , null]
-    });
+    this.carregaFormulario();
+    this.listaCategorias();
+    this.listaPessoas()
   }
 
 
   salvar() {
-    // this.formularioLancamento.value  Para passar o valores
-
+    this._lacamentoService.salvar(this.gerarBody())
+      .subscribe(
+        () => {
+          this._notificador.notificarSucesso("Lançamento salvo com sucesso!")
+          this.formularioLancamento.reset();
+          Object.keys(this.formularioLancamento.controls).forEach(key => {
+            this.formularioLancamento.get(key).setErrors(null) ;
+          });
+        }
+      )
   }
 
-  log(item:any){
-    console.log(item);
+  listaCategorias() {
+    this._categoriaService.buscaTodos()
+      .subscribe(
+        dados => this.categorias = dados
+      )
+  }
 
+
+  listaPessoas() {
+    this._pessoaService.buscaTodos()
+      .subscribe(
+        dados => this.pessoas = dados
+      )
+  }
+
+  carregaFormulario(){
+    this.formularioLancamento = this.fb.group({
+      tipo: ['RECEITA', null],
+      dataVencimento: [null, Validators.required],
+      dataPagamento: [null, Validators.required],
+      descricao: [null, [Validators.minLength(5), Validators.required]],
+      valor: [null, Validators.required],
+      categoria: [null, Validators.required],
+      pessoa: [null, Validators.required],
+      observacao: [null, null]
+    });
+  }
+
+  private gerarBody() {
+    let lancamento: Lancamento = new Lancamento()
+    let form = this.formularioLancamento.value;
+
+    lancamento.descricao = form.descricao;
+    lancamento.dataVencimento =  this._utilsService.converteDataComBarra(form.dataVencimento);
+    lancamento.dataPagamento =  this._utilsService.converteDataComBarra(form.dataPagamento);
+    lancamento.valor = form.valor;
+    lancamento.observacao = form.observacao;
+    lancamento.tipo = form.tipo;
+    lancamento.categoria = form.categoria;
+    lancamento.pessoa = form.pessoa;
+
+    return lancamento;
   }
 }

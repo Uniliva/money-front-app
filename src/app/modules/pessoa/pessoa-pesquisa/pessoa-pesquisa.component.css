@@ -11,6 +11,9 @@
  flex-wrap: wrap;
 }
 
+a{
+  cursor: pointer;
+}
 #container_filtro mat-form-field  {
   width: 100%;
 }

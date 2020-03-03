@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { PessoaService } from '../pessoa.service';
 import { MatDialog } from '@angular/material/dialog';
+
+import { PessoaService } from '../pessoa.service';
 import { ModalConfirmacaoComponent } from 'src/app/core/componentes/modal-confirmacao/modal-confirmacao.component';
-import { Pessoa } from 'src/app/shared/models/pessoa';
 import { NotificacaoService } from 'src/app/core/services/notificacao.service';
 
 
@@ -17,7 +17,7 @@ import { NotificacaoService } from 'src/app/core/services/notificacao.service';
 })
 export class PessoaPesquisaComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private pessoaService: PessoaService, public dialog: MatDialog, private notificador : NotificacaoService) { }
+  constructor(private fb: FormBuilder, private pessoaService: PessoaService, public dialog: MatDialog, private notificador: NotificacaoService) { }
 
   formularioPessoaPesquisa: FormGroup;
   dados: any;
@@ -39,34 +39,38 @@ export class PessoaPesquisaComponent implements OnInit {
     this.datasource.filter = filterValue.trim().toLowerCase();
   }
 
-  remover(pessoa){
+  remover(pessoa) {
     const dialogRef = this.dialog.open(ModalConfirmacaoComponent, {
       width: '350px',
-      data: {titulo: 'Remover pessoa!', msg: `Deseja remover ${pessoa.nome} ?`}
+      data: { titulo: 'Remover pessoa!', msg: `Deseja remover ${pessoa.nome} ?` }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
+      if (result) {
         this.pessoaService.removerPorCodigo(pessoa.codigo)
-        .subscribe( res => {
-          this.notificador.notificar('sucesso',`${pessoa.nome} removido com sucesso.`);
-          this.listarPessoas();
-        },
-          error =>  this.notificador.notificar('erro', `Erro ao apagar ${pessoa.nome}`)
-        );
+          .subscribe(res => {
+            this.notificador.notificarSucesso(`${pessoa.nome} removido com sucesso.`);
+            this.listarPessoas();
+          });
       }
 
     });
   }
 
-  listarPessoas(){
+  listarPessoas() {
     this.pessoaService.buscaTodos()
       .subscribe((data: any) => {
         this.datasource = new MatTableDataSource(data);
         this.datasource.paginator = this.paginator;
-      },
-        error => console.log("Ocorreu um erro ao listar pessoas"));
+      })
   }
 
+  ativarOuDesativar(pessoa) {
+    this.pessoaService.ativarOuDesativar(pessoa.codigo, pessoa.ativo)
+      .subscribe((data: any) => {
+        this.notificador.notificarSucesso(`Alterado status de ${pessoa.nome}.`);
+        this.listarPessoas();
+      })
+  }
 }
 
