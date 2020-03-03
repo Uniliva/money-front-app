@@ -16,11 +16,11 @@
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav mode="side" #snav class="sidenav-content">
       <mat-nav-list>
-        <mat-list-item class="links">
-          <mat-icon matListIcon>assessment</mat-icon> <a [routerLink]="['/lancamentos']" routerLinkActive="router-link-active"> Lançamentos</a>
+        <mat-list-item class="links" (click)="irLancamentos()" >
+          <mat-icon matListIcon>assessment</mat-icon> Lançamentos
         </mat-list-item>
-        <mat-list-item class="links">
-          <mat-icon matListIcon>supervised_user_circle</mat-icon><a [routerLink]="['/pessoas']" routerLinkActive="router-link-active">Pessoas</a>
+        <mat-list-item class="links" (click)="irPessoas()" >
+          <mat-icon matListIcon>supervised_user_circle</mat-icon>Pessoas
         </mat-list-item  >
         <mat-list-item class="links">
           <mat-icon matListIcon>exit_to_app</mat-icon> Logout

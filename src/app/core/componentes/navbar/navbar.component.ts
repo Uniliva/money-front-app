@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -6,6 +7,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+
+  constructor(private _rota: Router) { }
+
+
+  irLancamentos(){
+    this._rota.navigate(['lancamentos']);
+  }
+
+  irPessoas(){
+    this._rota.navigate(['pessoas']);
+  }
 
 
 }
