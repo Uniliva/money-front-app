@@ -19,9 +19,6 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     MaterialModule,
     NgxMaskModule.forRoot(options),
   ],
-  exports:[
-    PessoaCadastroComponent,
-    PessoaPesquisaComponent
-  ]
+  exports:[]
 })
 export class PessoaModule { }

@@ -35,10 +35,7 @@ export const customCurrencyMaskConfig = {
     ReactiveFormsModule,
     MaterialModule
   ],
-  exports: [
-    LancamentoCadastroComponent,
-    LancamentoPesquisaComponent
-  ],
+  exports: [],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' },
     DatePipe

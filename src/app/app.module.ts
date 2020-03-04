@@ -8,11 +8,12 @@ import { CoreModule } from './core/core.module';
 import { PessoaModule } from './modules/pessoa/pessoa.module';
 import { LancamentoModule } from './modules/lancamento/lancamento.module';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { LoginComponent } from './modules/login/login.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -26,4 +27,4 @@ import { RouterModule } from '@angular/router';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,6 +10,7 @@ export class NavbarComponent {
 
   constructor(private _rota: Router) { }
 
+  @Input() mostrarBarra = false;
 
   irLancamentos(){
     this._rota.navigate(['lancamentos']);
