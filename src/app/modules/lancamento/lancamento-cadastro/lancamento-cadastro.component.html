@@ -1,7 +1,7 @@
 <div class="caixa">
   <div class="centralizado">
 
-    <h1>Novo lançamentos</h1>
+    <h1>{{titulo}}</h1>
 
     <form [formGroup]="formularioLancamento" (ngSubmit)="salvar()" autocomplete="off">
 
@@ -20,15 +20,15 @@
       <div class="ajuste">
         <mat-form-field class="espaco ipt-data">
           <mat-label>Vencimento:</mat-label>
-          <input matInput [matDatepicker]="dataVenciemnto" name="dataVenciemnto" formControlName="dataVencimento">
-          <mat-datepicker-toggle matSuffix [for]="dataVenciemnto"></mat-datepicker-toggle>
-          <mat-datepicker #dataVenciemnto></mat-datepicker>
+          <input matInput [matDatepicker]="dataVenc" name="dataVencimento" formControlName="dataVencimento">
+          <mat-datepicker-toggle matSuffix [for]="dataVenc"></mat-datepicker-toggle>
+          <mat-datepicker #dataVenc></mat-datepicker>
           <mat-error *ngIf="formularioLancamento.controls.dataVencimento.hasError('required')">Campo
             <strong>Obrigatório.</strong></mat-error>
         </mat-form-field>
 
         <mat-form-field class="ipt-data">
-          <mat-label> {{formularioLancamento.controls.tipo.value =='Receita' ? 'Recebimento' : 'Pagamento'}}:
+          <mat-label> {{formularioLancamento.controls.tipo.value =='RECEITA' ? 'Recebimento' : 'Pagamento'}}:
           </mat-label>
           <input matInput [matDatepicker]="dataPagamento" name="dataPagamento" formControlName="dataPagamento">
           <mat-datepicker-toggle matSuffix [for]="dataPagamento"></mat-datepicker-toggle>
@@ -59,7 +59,7 @@
       <div class="ajuste">
         <mat-form-field class="espaco ajuste-espaco">
           <mat-label>Categoria:</mat-label>
-          <mat-select formControlName="categoria">
+          <mat-select  [compareWith]="compareFunction" formControlName="categoria">
             <mat-option>Selecione</mat-option>
             <mat-option *ngFor="let categoria of categorias" [value]="categoria">{{categoria.nome}}</mat-option>
           </mat-select>
@@ -69,7 +69,7 @@
 
         <mat-form-field class="ajuste-espaco">
           <mat-label>Pessoa:</mat-label>
-          <mat-select formControlName="pessoa">
+          <mat-select [compareWith]="compareFunction"  formControlName="pessoa">
             <mat-option>Selecione</mat-option>
             <mat-option *ngFor="let pessoa of pessoas" [value]="pessoa">{{pessoa.nome}}</mat-option>
           </mat-select>

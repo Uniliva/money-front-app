@@ -1,6 +1,7 @@
 import { Pessoa } from './pessoa';
 
 export class Lancamento {
+  codigo: number;
   descricao: string;
   dataVencimento: string;
   dataPagamento: string;

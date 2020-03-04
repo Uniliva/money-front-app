@@ -32,23 +32,16 @@ export class PessoaCadastroComponent implements OnInit {
 
     this._carregarFormulario(null);
 
-    this._rotaAtual.params.subscribe(
-      parametros => {
-        let codigo = parametros["id"];
-        if (codigo) {
-          this._pessoaService.buscaPorCodigo(codigo).subscribe(pessoa => {
-            this._pessoa = pessoa;
-            this._carregarFormulario(pessoa);
-            this.titulo = "Editar Pessoa";
-            this._modoEdicao = true;
-          });
-        }
-      },
-      erro => {
-        this._rota.navigate(["pessoas"]);
-        debugger;
-      }
-    );
+    let codigo = this._rotaAtual.snapshot.params['id'];
+
+    if (codigo) {
+      this._pessoaService.buscaPorCodigo(codigo).subscribe(pessoa => {
+        this._pessoa = pessoa;
+        this._carregarFormulario(pessoa);
+        this.titulo = "Editar Pessoa";
+        this._modoEdicao = true;
+      });
+    }
   }
 
   salvar() {

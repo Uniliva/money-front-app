@@ -5,11 +5,12 @@ import { NavbarComponent } from './componentes/navbar/navbar.component';
 import { ModalConfirmacaoComponent } from './componentes/modal-confirmacao/modal-confirmacao.component';
 import { ToastComponent } from './componentes/toast/toast.component';
 import { RouterModule } from '@angular/router';
+import { PaginaNaoEncontradaComponent } from './componentes/pagina-nao-encontrada/pagina-nao-encontrada.component';
 
 
 
 @NgModule({
-  declarations: [NavbarComponent, ModalConfirmacaoComponent, ToastComponent],
+  declarations: [NavbarComponent, ModalConfirmacaoComponent, ToastComponent, PaginaNaoEncontradaComponent],
   imports: [
     CommonModule,
     MaterialModule,

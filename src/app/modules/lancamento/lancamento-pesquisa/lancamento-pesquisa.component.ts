@@ -78,9 +78,15 @@ export class LancamentoPesquisaComponent implements OnInit {
     });
   }
 
-  novoLancamento(){
+  editar(codigo){
+    this._rota.navigate([`lancamento/${codigo}`]);
+  }
+
+
+  novo(){
     this._rota.navigate(['lancamento/novo']);
   }
+
 
   private buscarResumo(filtro: FiltroLancamento) {
     this._lacamentoService.buscarResumo(filtro).subscribe(data => {

@@ -7,6 +7,7 @@ import { catchError } from 'rxjs/operators';
 import { NotificacaoService } from 'src/app/core/services/notificacao.service';
 import { UtilsService } from 'src/app/core/services/utils.service';
 import { Lancamento } from 'src/app/shared/models/lancamento';
+import { Resumolancamento } from 'src/app/shared/models/resumolancamento';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,17 @@ export class LancamentoService {
     if (filtro.descricao)
       params = params.append('descricao', filtro.descricao.toLowerCase());
 
-    return this._http.get(`${environment.base_url}/lancamentos?resumo`, { headers, params }).pipe(
+    return this._http.get<Resumolancamento>(`${environment.base_url}/lancamentos?resumo`, { headers, params }).pipe(
+      catchError(err => {
+        this.notificador.notificarErro(err)
+        throw err
+      }
+      )
+    )
+  }
+
+  buscarPorCodigo(codigo): Observable<any> {
+    return this._http.get<Lancamento>(`${environment.base_url}/lancamentos/${codigo}`, { headers: this._utilsService.getHeaders() }).pipe(
       catchError(err => {
         this.notificador.notificarErro(err)
         throw err
@@ -53,7 +64,7 @@ export class LancamentoService {
   }
 
   salvar(lancamento:Lancamento){
-    return this._http.post(`${environment.base_url}/lancamentos`, lancamento, { headers: this._utilsService.getHeaders() }).pipe(
+    return this._http.post<Lancamento>(`${environment.base_url}/lancamentos`, lancamento, { headers: this._utilsService.getHeaders() }).pipe(
       catchError(err => {
         this.notificador.notificarErro(err)
         throw err
@@ -61,6 +72,17 @@ export class LancamentoService {
       )
     );
   }
+
+  atualizar(lancamento:Lancamento){
+    return this._http.put<Lancamento>(`${environment.base_url}/lancamentos/${lancamento.codigo}`, lancamento, { headers: this._utilsService.getHeaders() }).pipe(
+      catchError(err => {
+        this.notificador.notificarErro(err)
+        throw err
+      }
+      )
+    );
+  }
+
 
 
 
