@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 
 import { PessoaService } from "../pessoa.service";
 import { NotificacaoService } from "src/app/core/services/notificacao.service";
@@ -15,7 +15,9 @@ export class PessoaCadastroComponent implements OnInit {
   formularioPessoa: FormGroup;
   titulo: string;
   _modoEdicao: boolean = false;
-  _pessoa: Pessoa;
+  _pessoa: Pessoa= new Pessoa;
+
+  customPatterns = { '0': { pattern: new RegExp('\[0-9\]')} };
 
   constructor(
     private _fb: FormBuilder,
