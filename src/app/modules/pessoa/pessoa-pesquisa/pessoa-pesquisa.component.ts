@@ -82,5 +82,9 @@ export class PessoaPesquisaComponent implements OnInit {
   novaPessoa(){
     this._rota.navigate(['pessoa/nova']);
   }
+
+  editar(codigo){
+    this._rota.navigate([`pessoa/${codigo}`]);
+  }
 }
 

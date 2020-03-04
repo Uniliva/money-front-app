@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 
-import { PessoaService } from '../pessoa.service';
-import { NotificacaoService } from 'src/app/core/services/notificacao.service';
-import { Pessoa } from 'src/app/shared/models/pessoa';
-import { Router } from '@angular/router';
+import { PessoaService } from "../pessoa.service";
+import { NotificacaoService } from "src/app/core/services/notificacao.service";
+import { Pessoa } from "src/app/shared/models/pessoa";
+import { Router, ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-pessoa-cadastro",
@@ -13,56 +13,107 @@ import { Router } from '@angular/router';
 })
 export class PessoaCadastroComponent implements OnInit {
   formularioPessoa: FormGroup;
+  titulo: string;
+  _modoEdicao: boolean = false;
+  _pessoa: Pessoa;
 
   constructor(
     private _fb: FormBuilder,
     private _pessoaService: PessoaService,
     private _notificador: NotificacaoService,
-    private _rota: Router) {}
+    private _rota: Router,
+    private _rotaAtual: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.formularioPessoa = this._fb.group({
-      nome: [null, [Validators.minLength(10), Validators.required]],
-      logradouro: [null, [Validators.minLength(5), Validators.required]],
-      numero: [null, Validators.required],
-      complemento: [null, null],
-      bairro: [null, Validators.required],
-      cep: [null, Validators.required],
-      cidade: [null, Validators.required],
-      estado: [null, Validators.required]
-    });
+    this.titulo = "Nova Pessoa";
+
+    this._carregarFormulario(null);
+
+    this._rotaAtual.params.subscribe(
+      parametros => {
+        let codigo = parametros["id"];
+        if (codigo) {
+          this._pessoaService.buscaPorCodigo(codigo).subscribe(pessoa => {
+            this._pessoa = pessoa;
+            this._carregarFormulario(pessoa);
+            this.titulo = "Editar Pessoa";
+            this._modoEdicao = true;
+          });
+        }
+      },
+      erro => {
+        this._rota.navigate(["pessoas"]);
+        debugger;
+      }
+    );
   }
 
   salvar() {
-    this._pessoaService.salvar(this.gerarBody())
-      .subscribe(
-        () => {
-          this._notificador.notificarSucesso("Pessoa salva com sucesso!")
-          this.formularioPessoa.reset();
-          Object.keys(this.formularioPessoa.controls).forEach(key => {
-            this.formularioPessoa.get(key).setErrors(null) ;
-          });
-        }
-      )
+    if (this._modoEdicao) {
+      this._atualizarPessoa();
+    } else {
+      this._salvarPessoa();
+    }
   }
 
-  voltar(){
-    this._rota.navigate(['pessoas']);
+  private _salvarPessoa() {
+    this._pessoaService.salvar(this._gerarBody()).subscribe(() => {
+      this._notificador.notificarSucesso("Pessoa salva com sucesso!");
+      this._limparFormulario();
+    });
   }
 
-  private gerarBody() {
-    let pessoa: Pessoa = new Pessoa();
+  private _atualizarPessoa() {
+    this._pessoaService.atualizar(this._gerarBody()).subscribe(() => {
+      this._notificador.notificarSucesso(`Dados de ${this._pessoa.nome} atualizados  com sucesso!`);
+      this._limparFormulario();
+      this.voltar();
+    });
+  }
+
+  voltar() {
+    this._rota.navigate(["pessoas"]);
+  }
+
+  private _limparFormulario() {
+    this._pessoa = new Pessoa();
+    this.formularioPessoa.reset();
+    Object.keys(this.formularioPessoa.controls).forEach(key => {
+      this.formularioPessoa.get(key).setErrors(null);
+    });
+  }
+
+  private _gerarBody() {
     let form = this.formularioPessoa.value;
 
-    pessoa.nome = form.nome;
-    pessoa.ativo= true;
-    pessoa.endereco.logradouro = form.logradouro;
-    pessoa.endereco.numero = form.numero;
-    pessoa.endereco.cep = form.cep;
-    pessoa.endereco.bairro = form.bairro;
-    pessoa.endereco.complemento = form.complemento;
-    pessoa.endereco.cidade = form.cidade;
-    pessoa.endereco.estado = form.estado;
-    return pessoa;
+    this._pessoa.nome = form.nome;
+    this._pessoa.ativo = true;
+    this._pessoa.endereco.logradouro = form.logradouro;
+    this._pessoa.endereco.numero = form.numero;
+    this._pessoa.endereco.cep = form.cep;
+    this._pessoa.endereco.bairro = form.bairro;
+    this._pessoa.endereco.complemento = form.complemento;
+    this._pessoa.endereco.cidade = form.cidade;
+    this._pessoa.endereco.estado = form.estado;
+
+    return this._pessoa;
+  }
+
+  private _carregarFormulario(pessoa: Pessoa) {
+
+    this.formularioPessoa = this._fb.group({
+      nome: [pessoa?.nome, [Validators.minLength(10), Validators.required]],
+      logradouro: [
+        pessoa?.endereco.logradouro,
+        [Validators.minLength(5), Validators.required]
+      ],
+      numero: [pessoa?.endereco?.numero, Validators.required],
+      complemento: [pessoa?.endereco?.complemento],
+      bairro: [pessoa?.endereco?.bairro, Validators.required],
+      cep: [pessoa?.endereco?.cep, Validators.required],
+      cidade: [pessoa?.endereco?.cidade, Validators.required],
+      estado: [pessoa?.endereco?.estado, Validators.required]
+    });
   }
 }

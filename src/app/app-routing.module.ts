@@ -10,7 +10,8 @@ const routes: Routes = [
   { path: 'lancamentos', component: LancamentoPesquisaComponent },
   { path: 'lancamento/novo', component: LancamentoCadastroComponent },
   { path: 'pessoas', component: PessoaPesquisaComponent },
-  { path: 'pessoa/nova', component: PessoaCadastroComponent }
+  { path: 'pessoa/nova', component: PessoaCadastroComponent },
+  { path: 'pessoa/:id', component: PessoaCadastroComponent }
 ];
 
 @NgModule({

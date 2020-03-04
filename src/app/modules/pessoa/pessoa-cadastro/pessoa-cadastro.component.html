@@ -1,10 +1,9 @@
 <div class="caixa">
   <div class="centralizado">
 
-    <h1>Nova Pessoa</h1>
+    <h1>{{titulo}}</h1>
 
     <form [formGroup]="formularioPessoa" (ngSubmit)="salvar()" autocomplete="off">
-
 
       <div class="ajuste">
         <mat-form-field class="ipt-nome">
@@ -50,7 +49,7 @@
 
         <mat-form-field class="ipt-infos">
           <mat-label>CEP:</mat-label>
-          <input matInput name="cep" mask="00000-000" formControlName="cep" />
+          <input matInput name="cep" formControlName="cep"  mask="99999-999" />
           <mat-error *ngIf="formularioPessoa.controls.cep.hasError('required')">Campo <strong>Obrigatório.</strong>
           </mat-error>
         </mat-form-field>
