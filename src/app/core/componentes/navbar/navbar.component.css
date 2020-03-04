@@ -1,22 +1,41 @@
 
-.c_toolbar{
-  position: fixed;
-  z-index: 1;
+.container {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+  height: 100%;
 }
 
-.sidenav-container{
-  position: absolute;
-  top: 64px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: white;
+.menu{
+  width: 100%;
+  height: 64px;
 }
 
-.sidenav-content {
+.toolbar{
+  height: 64px;
+  z-index: 2;
+}
+
+.conteudo{
+  width: 100%;
+  height: calc(100% - 64px);
+}
+
+.conteudo-login{
+  width: 100%;
+  height: 100%;
+}
+
+
+.sidenav-container {
+  height: 100%;
+}
+
+.faixa {
   background-color:rgb(126, 75, 214);
   width: 200px;
 }
+
 
 .c_toolbar_direita{
   flex: 1 1 auto;
