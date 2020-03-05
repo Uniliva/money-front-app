@@ -8,8 +8,7 @@ import { CoreModule } from './core/core.module';
 import { PessoaModule } from './modules/pessoa/pessoa.module';
 import { LancamentoModule } from './modules/lancamento/lancamento.module';
 import { HttpClientModule } from '@angular/common/http';
-import { LoginComponent } from './modules/login/login.component';
-import { LoginModule } from './modules/login/login.module';
+import { JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -23,9 +22,15 @@ import { LoginModule } from './modules/login/login.module';
     PessoaModule,
     CoreModule,
     HttpClientModule,
-    LoginModule
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem("access_token");
+        }
+      }
+    })
   ],
-  providers: [],
+  providers: [ ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

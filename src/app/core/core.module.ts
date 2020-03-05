@@ -1,3 +1,5 @@
+import { ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from './login/login.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material/material.module';
@@ -10,11 +12,12 @@ import { PaginaNaoEncontradaComponent } from './componentes/pagina-nao-encontrad
 
 
 @NgModule({
-  declarations: [NavbarComponent, ModalConfirmacaoComponent, ToastComponent, PaginaNaoEncontradaComponent],
+  declarations: [NavbarComponent, ModalConfirmacaoComponent, ToastComponent, PaginaNaoEncontradaComponent, LoginComponent],
   imports: [
     CommonModule,
     MaterialModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
   ],
   exports: [NavbarComponent, ModalConfirmacaoComponent]
 })

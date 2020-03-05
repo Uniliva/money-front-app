@@ -1,7 +1,7 @@
 <div class="container">
   <div class="menu" *ngIf="mostrarBarra">
     <mat-toolbar color="primary" class="toolbar">
-      <button mat-icon-button (click)="snav.toggle()">
+      <button mat-icon-button (click)="abrirMenu()">
         <mat-icon>menu</mat-icon>
       </button>
       <h2>Responsive App</h2>
@@ -14,7 +14,7 @@
   </div>
   <div  [ngClass]="{'conteudo': mostrarBarra, 'conteudo-login': !mostrarBarra}">
     <mat-sidenav-container class="sidenav-container" >
-      <mat-sidenav mode="side" #snav class="faixa">
+      <mat-sidenav mode="side" #snav [(opened)]="menu"  class="faixa">
         <mat-nav-list>
           <mat-list-item class="links" (click)="irLancamentos()" >
             <mat-icon matListIcon>assessment</mat-icon> Lançamentos
@@ -22,7 +22,7 @@
           <mat-list-item class="links" (click)="irPessoas()" >
             <mat-icon matListIcon>supervised_user_circle</mat-icon>Pessoas
           </mat-list-item  >
-          <mat-list-item class="links">
+          <mat-list-item class="links" (click)="logout()">
             <mat-icon matListIcon>exit_to_app</mat-icon> Logout
           </mat-list-item>
 

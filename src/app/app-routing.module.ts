@@ -1,3 +1,4 @@
+import { LoginComponent } from './core/login/login.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LancamentoPesquisaComponent } from './modules/lancamento/lancamento-pesquisa/lancamento-pesquisa.component';
@@ -5,7 +6,6 @@ import { LancamentoCadastroComponent } from './modules/lancamento/lancamento-cad
 import { PessoaPesquisaComponent } from './modules/pessoa/pessoa-pesquisa/pessoa-pesquisa.component';
 import { PessoaCadastroComponent } from './modules/pessoa/pessoa-cadastro/pessoa-cadastro.component';
 import { PaginaNaoEncontradaComponent } from './core/componentes/pagina-nao-encontrada/pagina-nao-encontrada.component';
-import { LoginComponent } from './modules/login/login.component';
 
 
 const routes: Routes = [

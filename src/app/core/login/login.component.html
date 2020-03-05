@@ -3,7 +3,7 @@
     <form [formGroup]="formularioLogin">
 
       <div class="icone">
-        <mat-icon color="primary">perm_identity</mat-icon>
+        <mat-icon color="primary">account_circle</mat-icon>
       </div>
 
       <mat-form-field>
@@ -20,8 +20,8 @@
           {{formularioLogin.controls.senha.errors.minlength.requiredLength}} caracteres </mat-error>
         </mat-form-field>
 
-      <div class="alerta" *ngIf="usuarioInvalido">
-        <span> Usuario ou senha inválidos!</span>
+      <div class="alerta" *ngIf="msgError">
+        <span>{{msgError}}!</span>
       </div>
 
       <button mat-raised-button color="primary" [disabled]="formularioLogin.invalid" (click)="logar()">login</button>
