@@ -1,16 +1,30 @@
 <div class="container">
   <div class="caixa">
     <form [formGroup]="formularioLogin">
+
+      <div class="icone">
+        <mat-icon color="primary">perm_identity</mat-icon>
+      </div>
+
       <mat-form-field>
         <mat-label>E-mail:</mat-label>
-        <input matInput >
+        <input matInput formControlName="email">
+        <mat-error *ngIf="formularioLogin.controls.email.hasError('email')">Informe um email válido.</mat-error>
       </mat-form-field>
 
 
       <mat-form-field>
         <mat-label>Senha:</mat-label>
-        <input type="password" matInput>
-      </mat-form-field>
+        <input type="password" matInput formControlName='senha'>
+        <mat-error *ngIf="formularioLogin.controls.senha.hasError('minlength')">Campo deve ter no mínimo
+          {{formularioLogin.controls.senha.errors.minlength.requiredLength}} caracteres </mat-error>
+        </mat-form-field>
+
+      <div class="alerta" *ngIf="usuarioInvalido">
+        <span> Usuario ou senha inválidos!</span>
+      </div>
+
+      <button mat-raised-button color="primary" [disabled]="formularioLogin.invalid" (click)="logar()">login</button>
 
     </form>
 
