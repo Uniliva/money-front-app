@@ -21,6 +21,11 @@
   height: calc(100% - 64px);
 }
 
+.conteudo-login{
+  width: 100%;
+  height: 100%;
+}
+
 
 .sidenav-container {
   height: 100%;

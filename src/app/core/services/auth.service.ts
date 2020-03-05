@@ -1,13 +1,11 @@
-import { Lancamento } from "src/app/shared/models/lancamento";
-import { environment } from "./../../../environments/environment";
-import { Injectable } from "@angular/core";
+import { Injectable, EventEmitter } from "@angular/core";
 
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
-import { UtilsService } from "src/app/core/services/utils.service";
+import { environment } from "./../../../environments/environment";
 import { JwtHelperService } from "@auth0/angular-jwt";
+import { Observable } from "rxjs";
 import { map, catchError } from "rxjs/operators";
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: "root"
@@ -17,6 +15,8 @@ export class AuthService {
     private _http: HttpClient,
     private _jwtHelper: JwtHelperService
   ) {}
+
+  static usuarioLogado = new EventEmitter();
 
   private _clientAcessOauthBase64 = "YW5ndWxhcjpAbmd1bEByMA==";
 
@@ -33,6 +33,7 @@ export class AuthService {
       .pipe(
         map(token => {
           localStorage.setItem("access_token", token.access_token);
+          AuthService.usuarioLogado.emit(true);
         }),
         catchError(erro => {
           throw erro;
@@ -46,12 +47,13 @@ export class AuthService {
   }
 
   logout() {
+    AuthService.usuarioLogado.emit(false);
     localStorage.clear();
   }
 
-  buscaDadosUsuario():any {
+  buscaDadosUsuario(): any {
     const payload = this._jwtHelper.decodeToken();
-    if(payload){
+    if (payload) {
       const lstPermissoes = payload.authorities;
       let usuario = {
         nome: payload.user_name,
@@ -65,7 +67,10 @@ export class AuthService {
               "ROLE_PESQUISAR_LANCAMENTO"
             ),
             exclusao: this._temPerm(lstPermissoes, "ROLE_REMOVER_LANCAMENTO"),
-            atualizacao: this._temPerm(lstPermissoes, "ROLE_ATUALIZAR_LANCAMENTO")
+            atualizacao: this._temPerm(
+              lstPermissoes,
+              "ROLE_ATUALIZAR_LANCAMENTO"
+            )
           },
           categoria: {
             criacao: this._temPerm(lstPermissoes, "ROLE_CADASTRAR_CATEGORIA"),
@@ -74,7 +79,10 @@ export class AuthService {
               "ROLE_PESQUISAR_CATEGORIA"
             ),
             exclusao: this._temPerm(lstPermissoes, "ROLE_REMOVER_CATEGORIA"),
-            atualizacao: this._temPerm(lstPermissoes, "ROLE_ATUALIZAR_CATEGORIA")
+            atualizacao: this._temPerm(
+              lstPermissoes,
+              "ROLE_ATUALIZAR_CATEGORIA"
+            )
           },
           pessoa: {
             criacao: this._temPerm(lstPermissoes, "ROLE_CADASTRAR_PESSOA"),
@@ -88,7 +96,6 @@ export class AuthService {
     }
 
     return null;
-
   }
 
   private _recuperarToken() {

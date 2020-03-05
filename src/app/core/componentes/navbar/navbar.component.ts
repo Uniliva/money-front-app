@@ -9,6 +9,8 @@ import { runInThisContext } from "vm";
   styleUrls: ["./navbar.component.css"]
 })
 export class NavbarComponent implements OnInit {
+  usuarioLogado;
+
   constructor(private _rota: Router, private _auth: AuthService) {}
 
   menu = false;
@@ -16,8 +18,20 @@ export class NavbarComponent implements OnInit {
   permissoes: any;
 
   ngOnInit(): void {
-    this.usuario = this._auth.buscaDadosUsuario();
-    this.permissoes = this.usuario.permissoes;
+
+    if(this._auth.estaLogado()){
+      this.usuarioLogado = true;
+      this.usuario = this._auth.buscaDadosUsuario();
+      this.permissoes = this.usuario.permissoes;
+    }
+
+    AuthService.usuarioLogado.subscribe(logado => {
+      this.usuarioLogado = logado;
+      if (logado) {
+        this.usuario = this._auth.buscaDadosUsuario();
+        this.permissoes = this.usuario.permissoes;
+      }
+    });
   }
 
   irLancamentos() {
@@ -29,6 +43,7 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
+    this.usuarioLogado = false;
     this.menu = false;
     this._auth.logout();
     this._rota.navigate(["login"]);

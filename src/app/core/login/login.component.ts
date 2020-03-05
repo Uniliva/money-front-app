@@ -23,7 +23,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (this._auth.estaLogado()) {
-      this._auth.buscaDadosUsuario();
       this._rota.navigate(["lancamentos"]);
     }
 
