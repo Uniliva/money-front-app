@@ -20,7 +20,6 @@ export class LancamentoService {
 
   buscarResumo(filtro: FiltroLancamento): Observable<any> {
     let params = new HttpParams();
-    const headers = this._utilsService.getHeaders()
 
     params = params.append('size', filtro.tamanho.toString());
     params = params.append('page', filtro.pagina.toString());
@@ -34,7 +33,7 @@ export class LancamentoService {
     if (filtro.descricao)
       params = params.append('descricao', filtro.descricao.toLowerCase());
 
-    return this._http.get<Resumolancamento>(`${environment.base_url}/lancamentos?resumo`, { headers, params }).pipe(
+    return this._http.get<Resumolancamento>(`${environment.base_url}/lancamentos?resumo`, {params}).pipe(
       catchError(err => {
         this.notificador.notificarErro(err)
         throw err
@@ -44,7 +43,7 @@ export class LancamentoService {
   }
 
   buscarPorCodigo(codigo): Observable<any> {
-    return this._http.get<Lancamento>(`${environment.base_url}/lancamentos/${codigo}`, { headers: this._utilsService.getHeaders() }).pipe(
+    return this._http.get<Lancamento>(`${environment.base_url}/lancamentos/${codigo}`).pipe(
       catchError(err => {
         this.notificador.notificarErro(err)
         throw err
@@ -54,7 +53,7 @@ export class LancamentoService {
   }
 
   removerPorCodigo(codigo) {
-    return this._http.delete(`${environment.base_url}/lancamentos/${codigo}`, { headers: this._utilsService.getHeaders() }).pipe(
+    return this._http.delete(`${environment.base_url}/lancamentos/${codigo}`).pipe(
       catchError(err => {
         this.notificador.notificarErro(err)
         throw err
@@ -64,7 +63,7 @@ export class LancamentoService {
   }
 
   salvar(lancamento:Lancamento){
-    return this._http.post<Lancamento>(`${environment.base_url}/lancamentos`, lancamento, { headers: this._utilsService.getHeaders() }).pipe(
+    return this._http.post<Lancamento>(`${environment.base_url}/lancamentos`, lancamento).pipe(
       catchError(err => {
         this.notificador.notificarErro(err)
         throw err
@@ -74,7 +73,7 @@ export class LancamentoService {
   }
 
   atualizar(lancamento:Lancamento){
-    return this._http.put<Lancamento>(`${environment.base_url}/lancamentos/${lancamento.codigo}`, lancamento, { headers: this._utilsService.getHeaders() }).pipe(
+    return this._http.put<Lancamento>(`${environment.base_url}/lancamentos/${lancamento.codigo}`, lancamento).pipe(
       catchError(err => {
         this.notificador.notificarErro(err)
         throw err

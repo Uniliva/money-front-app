@@ -1,3 +1,4 @@
+import { AuthService } from './../../../core/services/auth.service';
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
 
@@ -10,6 +11,7 @@ import { NotificacaoService } from 'src/app/core/services/notificacao.service';
 import { ModalConfirmacaoComponent } from 'src/app/core/componentes/modal-confirmacao/modal-confirmacao.component';
 import { LancamentoService } from "./../lancamento.service";
 import { Router } from '@angular/router';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: "app-lancamento-pesquisa",
@@ -24,29 +26,42 @@ export class LancamentoPesquisaComponent implements OnInit {
     private _lacamentoService: LancamentoService,
     public _dialog: MatDialog,
     private _notificador: NotificacaoService,
-    private _rota: Router
+    private _rota: Router,
+    private _auth: AuthService
   ) { }
 
   dados = [];
   datasource = new MatTableDataSource();
+  usuario: any;
+  permissoes: any;
+  exibirAcoes = false;
 
   colunas: string[] = [
     "pessoa",
     "descricao",
     "dataVencimento",
     "dataPagamento",
-    "valor",
-    "acoes"
+    "valor"
   ];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   ngOnInit() {
+    this.usuario = this._auth.buscaDadosUsuario();
+    this.permissoes = this.usuario.permissoes;
+
+    this.exibirAcoes = this.permissoes.lancamento.atualizacao || this.permissoes.lancamento.exclusao;
+    if(this.exibirAcoes){
+        this.colunas.push("acoes");
+    }
+
+
     this.formularioPesquisa = this._fb.group({
       descricao: [''],
       dataVencimentoAte: [''],
       dataVencimentoDe: ['']
     });
+
 
     let filtro = this.montarFiltro();
     filtro.pagina = 0;
@@ -81,7 +96,6 @@ export class LancamentoPesquisaComponent implements OnInit {
   editar(codigo){
     this._rota.navigate([`lancamento/${codigo}`]);
   }
-
 
   novo(){
     this._rota.navigate(['lancamento/novo']);

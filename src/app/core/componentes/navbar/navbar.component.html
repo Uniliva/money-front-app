@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="menu" *ngIf="mostrarBarra">
+  <div class="menu">
     <mat-toolbar color="primary" class="toolbar">
       <button mat-icon-button (click)="abrirMenu()">
         <mat-icon>menu</mat-icon>
@@ -7,19 +7,19 @@
       <h2>Responsive App</h2>
 
       <div  class="c_toolbar_direita">
-        <h4 class="c_user"> Adminstrador </h4>
+        <h4 class="c_user"> {{usuario?.nome}} </h4>
       </div>
 
     </mat-toolbar>
   </div>
-  <div  [ngClass]="{'conteudo': mostrarBarra, 'conteudo-login': !mostrarBarra}">
+  <div  class="conteudo">
     <mat-sidenav-container class="sidenav-container" >
       <mat-sidenav mode="side" #snav [(opened)]="menu"  class="faixa">
         <mat-nav-list>
-          <mat-list-item class="links" (click)="irLancamentos()" >
+          <mat-list-item class="links"  *ngIf="permissoes.lancamento.visualizacao" (click)="irLancamentos()" >
             <mat-icon matListIcon>assessment</mat-icon> Lançamentos
           </mat-list-item>
-          <mat-list-item class="links" (click)="irPessoas()" >
+          <mat-list-item class="links"  *ngIf="permissoes.pessoa.visualizacao" (click)="irPessoas()" >
             <mat-icon matListIcon>supervised_user_circle</mat-icon>Pessoas
           </mat-list-item  >
           <mat-list-item class="links" (click)="logout()">

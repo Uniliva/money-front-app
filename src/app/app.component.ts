@@ -7,9 +7,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
   constructor(private _rota: Router) { }
 
+
   exibirBarra() {
-    return this._rota.url !== '/login';
+    return this._rota.url !== '/login' && this._rota.url !== '/' ;
   }
+
 }

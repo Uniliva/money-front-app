@@ -1,3 +1,4 @@
+import { environment } from './../environments/environment';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -26,7 +27,9 @@ import { JwtModule } from '@auth0/angular-jwt';
       config: {
         tokenGetter: () => {
           return localStorage.getItem("access_token");
-        }
+        },
+      whitelistedDomains: [environment.base_url],
+      blacklistedRoutes: [`${environment.base_url}/oauth/token`]
       }
     })
   ],

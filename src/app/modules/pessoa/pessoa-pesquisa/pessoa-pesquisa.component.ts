@@ -1,3 +1,4 @@
+import { AuthService } from './../../../core/services/auth.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
@@ -18,26 +19,45 @@ import { Router } from '@angular/router';
 })
 export class PessoaPesquisaComponent implements OnInit {
 
+
+
   constructor(
     private _fb: FormBuilder,
     private _pessoaService: PessoaService,
     public _dialog: MatDialog,
     private _notificador: NotificacaoService,
-    private _rota: Router) { }
+    private _rota: Router,
+    private _auth: AuthService
+    ) { }
 
   formularioPessoaPesquisa: FormGroup;
   dados: any;
-  colunas: string[] = ['nome', 'cidade', 'estado', 'ativo', 'acoes'];
+  colunas: string[] = ['nome', 'cidade', 'estado', 'ativo'];
+  usuario: any;
+  permissoes: any;
+  exibirAcoes = false;
 
   datasource = new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   ngOnInit() {
+
+    this.usuario = this._auth.buscaDadosUsuario();
+    this.permissoes = this.usuario.permissoes;
+
+    this.exibirAcoes = this.permissoes.lancamento.atualizacao || this.permissoes.lancamento.exclusao;
+    if(this.exibirAcoes){
+        this.colunas.push("acoes");
+    }
+
+
     this.formularioPessoaPesquisa = this._fb.group({
       nome: ['']
     })
     this.listarPessoas();
+
+
   }
 
   aplicarFiltror(event: Event) {

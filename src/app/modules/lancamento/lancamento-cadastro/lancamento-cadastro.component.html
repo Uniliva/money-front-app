@@ -91,7 +91,7 @@
           <mat-icon>arrow_back</mat-icon> voltar
         </button>
 
-        <button mat-raised-button color="accent" [disabled]="formularioLancamento.invalid">
+        <button mat-raised-button color="accent" [disabled]="formularioLancamento.invalid" (click)="salvar()" >
           <mat-icon>save</mat-icon> Salvar
         </button>
 

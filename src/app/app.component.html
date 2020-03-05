@@ -1,3 +1,5 @@
-<app-navbar [mostrarBarra]="exibirBarra()">
+<app-navbar *ngIf="true">
   <router-outlet></router-outlet>
 </app-navbar>
+
+<!-- <router-outlet *ngIf="!exibirBarra()"></router-outlet> -->

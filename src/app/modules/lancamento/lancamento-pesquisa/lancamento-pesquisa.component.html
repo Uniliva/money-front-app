@@ -31,7 +31,7 @@
             <mat-icon>search</mat-icon> Pesquisar
           </button>
 
-          <button mat-raised-button color="primary" (click)="novo()">
+          <button mat-raised-button color="primary" *ngIf="permissoes.lancamento.criacao" (click)="novo()" >
             <mat-icon>add</mat-icon> Novo Lançamento
           </button>
 
@@ -82,13 +82,13 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="acoes">
+        <ng-container matColumnDef="acoes"  *ngIf="exibirAcoes">
           <th mat-header-cell *matHeaderCellDef>Ações</th>
           <td mat-cell *matCellDef="let element" class="col-acao-size">
-            <button mat-icon-button color="primary" matTooltip="Editar" (click)="editar(element.codigo)">
+            <button mat-icon-button color="primary" matTooltip="Editar"  *ngIf="permissoes.lancamento.atualizacao" (click)="editar(element.codigo)">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" matTooltip="Excluir" (click)="remover(element)">
+            <button mat-icon-button color="warn" matTooltip="Excluir"  *ngIf="permissoes.lancamento.exclusao" (click)="remover(element)">
               <mat-icon>delete</mat-icon>
             </button>
           </td>

@@ -20,9 +20,7 @@ export class PessoaService {
 
   buscaTodos() {
     return this._http
-      .get<Pessoa[]>(`${environment.base_url}/pessoas`, {
-        headers: this._utilsService.getHeaders()
-      })
+      .get<Pessoa[]>(`${environment.base_url}/pessoas`)
       .pipe(
         catchError(err => {
           this.notificador.notificarErro(err);
@@ -33,9 +31,7 @@ export class PessoaService {
 
   buscaPorCodigo(codigo) {
     return this._http
-      .get<Pessoa>(`${environment.base_url}/pessoas/${codigo}`, {
-        headers: this._utilsService.getHeaders()
-      })
+      .get<Pessoa>(`${environment.base_url}/pessoas/${codigo}`)
       .pipe(
         catchError(err => {
           this.notificador.notificarErro(err);
@@ -46,9 +42,7 @@ export class PessoaService {
 
   removerPorCodigo(codigo) {
     return this._http
-      .delete(`${environment.base_url}/pessoas/${codigo}`, {
-        headers: this._utilsService.getHeaders()
-      })
+      .delete(`${environment.base_url}/pessoas/${codigo}`)
       .pipe(
         catchError(err => {
           this.notificador.notificarErro(err);
@@ -60,10 +54,7 @@ export class PessoaService {
   ativarOuDesativar(codigo, status) {
     return this._http
       .put(
-        `${environment.base_url}/pessoas/${codigo}/ativo?status=${!status}`,
-        null,
-        { headers: this._utilsService.getHeaders() }
-      )
+        `${environment.base_url}/pessoas/${codigo}/ativo?status=${!status}`,null)
       .pipe(
         catchError(err => {
           this.notificador.notificarErro(err);
@@ -74,9 +65,7 @@ export class PessoaService {
 
   salvar(pessoa: Pessoa) {
     return this._http
-      .post(`${environment.base_url}/pessoas`, pessoa, {
-        headers: this._utilsService.getHeaders()
-      })
+      .post(`${environment.base_url}/pessoas`, pessoa)
       .pipe(
         catchError(err => {
           this.notificador.notificarErro(err);
@@ -87,9 +76,7 @@ export class PessoaService {
 
   atualizar(pessoa: Pessoa) {
     return this._http
-      .put<Pessoa>(`${environment.base_url}/pessoas/${pessoa.codigo}`, pessoa, {
-        headers: this._utilsService.getHeaders()
-      })
+      .put<Pessoa>(`${environment.base_url}/pessoas/${pessoa.codigo}`, pessoa)
       .pipe(
         catchError(err => {
           this.notificador.notificarErro(err);

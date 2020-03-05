@@ -1,3 +1,4 @@
+import { Lancamento } from "src/app/shared/models/lancamento";
 import { environment } from "./../../../environments/environment";
 import { Injectable } from "@angular/core";
 
@@ -6,12 +7,12 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { UtilsService } from "src/app/core/services/utils.service";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { map, catchError } from "rxjs/operators";
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
-
   constructor(
     private _http: HttpClient,
     private _jwtHelper: JwtHelperService
@@ -39,20 +40,62 @@ export class AuthService {
       );
   }
 
-  estaLogado(){
-      let token = this._recuperarToken();
-      return token && !this._jwtHelper.isTokenExpired();
+  estaLogado() {
+    let token = this._recuperarToken();
+    return token && !this._jwtHelper.isTokenExpired();
   }
-
-
 
   logout() {
     localStorage.clear();
   }
 
+  buscaDadosUsuario():any {
+    const payload = this._jwtHelper.decodeToken();
+    if(payload){
+      const lstPermissoes = payload.authorities;
+      let usuario = {
+        nome: payload.user_name,
+        estaComTokenExpirado: this._jwtHelper.isTokenExpired(),
+        dataToken: this._jwtHelper.getTokenExpirationDate(),
+        permissoes: {
+          lancamento: {
+            criacao: this._temPerm(lstPermissoes, "ROLE_CADASTRAR_LANCAMENTO"),
+            visualizacao: this._temPerm(
+              lstPermissoes,
+              "ROLE_PESQUISAR_LANCAMENTO"
+            ),
+            exclusao: this._temPerm(lstPermissoes, "ROLE_REMOVER_LANCAMENTO"),
+            atualizacao: this._temPerm(lstPermissoes, "ROLE_ATUALIZAR_LANCAMENTO")
+          },
+          categoria: {
+            criacao: this._temPerm(lstPermissoes, "ROLE_CADASTRAR_CATEGORIA"),
+            visualizacao: this._temPerm(
+              lstPermissoes,
+              "ROLE_PESQUISAR_CATEGORIA"
+            ),
+            exclusao: this._temPerm(lstPermissoes, "ROLE_REMOVER_CATEGORIA"),
+            atualizacao: this._temPerm(lstPermissoes, "ROLE_ATUALIZAR_CATEGORIA")
+          },
+          pessoa: {
+            criacao: this._temPerm(lstPermissoes, "ROLE_CADASTRAR_PESSOA"),
+            visualizacao: this._temPerm(lstPermissoes, "ROLE_PESQUISAR_PESSOA"),
+            exclusao: this._temPerm(lstPermissoes, "ROLE_REMOVER_PESSOA"),
+            atualizacao: this._temPerm(lstPermissoes, "ROLE_ATUALIZAR_PESSOA")
+          }
+        }
+      };
+      return usuario;
+    }
 
-  private _recuperarToken(){
-    return localStorage.getItem('access_token');
+    return null;
+
   }
 
+  private _recuperarToken() {
+    return localStorage.getItem("access_token");
+  }
+
+  private _temPerm(lstPermissoes, permissao) {
+    return lstPermissoes.includes(permissao);
+  }
 }
