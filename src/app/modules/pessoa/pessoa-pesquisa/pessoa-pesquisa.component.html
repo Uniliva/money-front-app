@@ -17,13 +17,10 @@
           <input matInput (keyup)="aplicarFiltror($event)" placeholder="Ex. Manoel">
         </mat-form-field>
       </div>
-
-      <div id="container_paginacao">
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
-      </div>
     </div>
 
     <div class="tabela mat-elevation-z8">
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
       <table mat-table [dataSource]="datasource">
         <ng-container matColumnDef="nome">
           <th mat-header-cell *matHeaderCellDef>Nome</th>
