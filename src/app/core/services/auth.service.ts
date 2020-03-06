@@ -1,11 +1,12 @@
 import { Injectable, EventEmitter } from "@angular/core";
 
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 
 import { environment } from "./../../../environments/environment";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { Observable } from "rxjs";
 import { map, catchError } from "rxjs/operators";
+import { NotificacaoService } from './notificacao.service';
 
 @Injectable({
   providedIn: "root"
@@ -13,8 +14,9 @@ import { map, catchError } from "rxjs/operators";
 export class AuthService {
   constructor(
     private _http: HttpClient,
-    private _jwtHelper: JwtHelperService
-  ) {}
+    private _jwtHelper: JwtHelperService,
+    private _notificador: NotificacaoService
+  ) { }
 
   static usuarioLogado = new EventEmitter();
 
@@ -41,9 +43,42 @@ export class AuthService {
       );
   }
 
+  revalidarToken() {
+    let url = `${environment.base_url}/oauth/token`;
+
+    let params = new HttpParams().set('grant_type', 'refresh_token');
+
+    let headers = new HttpHeaders({
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Basic ${this._clientAcessOauthBase64}`
+    });
+
+    return this._http
+      .post<any>(url, null, { headers, params })
+      .pipe(
+        map(token => {
+          localStorage.setItem("access_token", token.access_token);
+          AuthService.usuarioLogado.emit(true);
+        }),
+        catchError(erro => {
+          this._notificador.notificarErro("Sessão inspirada necessário fazer o login novamente!");
+          this.logout();
+          throw erro;
+        })
+      );
+  }
+
+  estaComTokenInvalido() {
+    return this._jwtHelper.isTokenExpired();
+  }
+
   estaLogado() {
     let token = this._recuperarToken();
     return token && !this._jwtHelper.isTokenExpired();
+  }
+
+  temToken() {
+    return !!this._recuperarToken()
   }
 
   logout() {
@@ -104,5 +139,25 @@ export class AuthService {
 
   private _temPerm(lstPermissoes, permissao) {
     return lstPermissoes.includes(permissao);
+  }
+
+  temPermAlgumaDessasPermisoes(lstPermissoes) {
+
+    let retorno = false;
+
+    const payload = this._jwtHelper.decodeToken();
+    if (payload) {
+      const permissoes = payload.authorities;
+
+      for (let permissao of lstPermissoes) {
+        if (permissoes.includes(permissao)) {
+          retorno = true;
+          break;
+        }
+      };
+    }
+    return retorno;
+
+
   }
 }

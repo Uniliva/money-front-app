@@ -28,8 +28,8 @@ import { JwtModule } from '@auth0/angular-jwt';
         tokenGetter: () => {
           return localStorage.getItem("access_token");
         },
-      whitelistedDomains: [environment.base_url],
-      blacklistedRoutes: [`${environment.base_url}/oauth/token`]
+      whitelistedDomains: ['localhost:4200'],
+      blacklistedRoutes: ['/api/oauth/token']
       }
     })
   ],

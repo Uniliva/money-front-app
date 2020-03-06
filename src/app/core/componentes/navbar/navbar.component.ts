@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if(this._auth.estaLogado()){
+    if(this._auth.estaLogado() || this._auth.temToken()){
       this.usuarioLogado = true;
       this.usuario = this._auth.buscaDadosUsuario();
       this.permissoes = this.usuario.permissoes;

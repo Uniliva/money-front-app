@@ -8,6 +8,8 @@ import { ModalConfirmacaoComponent } from './componentes/modal-confirmacao/modal
 import { ToastComponent } from './componentes/toast/toast.component';
 import { RouterModule } from '@angular/router';
 import { PaginaNaoEncontradaComponent } from './componentes/pagina-nao-encontrada/pagina-nao-encontrada.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MoneyHttpInterceptor } from './servicos/money-http-interceptor';
 
 
 
@@ -19,6 +21,11 @@ import { PaginaNaoEncontradaComponent } from './componentes/pagina-nao-encontrad
     RouterModule,
     ReactiveFormsModule
   ],
-  exports: [NavbarComponent, ModalConfirmacaoComponent]
+  exports: [NavbarComponent, ModalConfirmacaoComponent],
+  providers:[{
+    provide: HTTP_INTERCEPTORS,
+    useClass: MoneyHttpInterceptor,
+    multi: true
+}]
 })
 export class CoreModule { }
