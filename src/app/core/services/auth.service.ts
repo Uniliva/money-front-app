@@ -7,6 +7,7 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 import { Observable } from "rxjs";
 import { map, catchError } from "rxjs/operators";
 import { NotificacaoService } from './notificacao.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: "root"
@@ -23,15 +24,20 @@ export class AuthService {
   private _clientAcessOauthBase64 = "YW5ndWxhcjpAbmd1bEByMA==";
 
   logar(usuario) {
-    let url = `${environment.base_url}/oauth/token?username=${usuario.email}&password=${usuario.senha}&grant_type=password`;
+    let url = `${environment.base_url}/oauth/token`;
 
     let headers = new HttpHeaders({
       "Content-Type": "application/x-www-form-urlencoded",
       Authorization: `Basic ${this._clientAcessOauthBase64}`
     });
 
+    let params = new HttpParams()
+    params = params.set('username', usuario.email);
+    params = params.set('password', usuario.senha);
+    params = params.set('grant_type', 'password');
+
     return this._http
-      .post<any>(url, null, { headers: headers })
+      .post<any>(url, null, { headers: headers, params: params })
       .pipe(
         map(token => {
           localStorage.setItem("access_token", token.access_token);

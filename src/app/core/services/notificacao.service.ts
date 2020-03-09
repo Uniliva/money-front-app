@@ -25,9 +25,9 @@ export class NotificacaoService {
 
     let msg: string;
 
-    if (erro instanceof String) {
+    if (typeof (erro) === 'string') {
       msg = erro.toString();
-    } else if (erro.error.msgUsuario) {
+    } else if (erro.error?.msgUsuario) {
       msg = erro.error.msgUsuario;
     } else {
       msg = 'Ocorreu ao consultar serviço remoto. Tente novamente'

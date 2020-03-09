@@ -56,7 +56,7 @@ export class LancamentoCadastroComponent implements OnInit {
   }
 
   compareFunction(o1: any, o2: any) {
-    return (o1.codigo == o2.codigo);
+    return (o1?.codigo == o2?.codigo);
   }
 
   salvar() {

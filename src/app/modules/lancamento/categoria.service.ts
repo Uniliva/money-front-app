@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NotificacaoService } from 'src/app/core/services/notificacao.service';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
 import { UtilsService } from 'src/app/core/services/utils.service';
 
