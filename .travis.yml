@@ -1,0 +1,30 @@
+language: node_js
+node_js:
+  - '8'
+
+cache:
+directories:
+  - ./node_modules
+
+install:
+  - npm install
+  - npm build
+  - docker build -t="money-front":latest .
+
+before_deploy:
+  - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
+
+deploy:
+  provider: script
+  script:
+    echo "---------| Gerando Tags para imagem!!!  |---------";
+    docker tag money-front:latest $DOCKER_USERNAME/money-front:$TRAVIS_JOB_ID;
+    docker tag money-front:latest $DOCKER_USERNAME/money-front:latest;
+    echo "---------| Enviando para o Docker HUB !!!  |---------"
+    docker push $DOCKER_USERNAME/money-front:$TRAVIS_JOB_ID;
+    docker push $DOCKER_USERNAME/money-front:latest;
+    echo "---------| Imagem enviada com sucesso para Docker HUB !!!  |---------";
+  on:
+    brach: master
+notifications:
+  email: false

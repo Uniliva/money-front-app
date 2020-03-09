@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  base_url: 'http://localhost:8095'
+  base_url: 'money-api:8095'
 };
 
 
