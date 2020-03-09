@@ -8,7 +8,7 @@ directories:
 
 install:
   - npm install
-  - npm build
+  - npm run build
   - docker build -t="money-front":latest .
 
 before_deploy:
