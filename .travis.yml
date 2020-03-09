@@ -2,6 +2,13 @@ language: node_js
 node_js:
   - '10.15'
 
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
+
 cache:
 directories:
   - ./node_modules
@@ -10,6 +17,9 @@ install:
   - npm install
   - npm run build
   - docker build -t="money-front":latest .
+
+script:
+  - npm run test -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
 
 before_deploy:
   - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
