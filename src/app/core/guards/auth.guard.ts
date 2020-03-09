@@ -15,6 +15,7 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     if(next.data.roles && !this._auth.temPermAlgumaDessasPermisoes(next.data.roles)){
+      this._route.navigate(["acesso-negado"]);
       return false
     }
     return true;

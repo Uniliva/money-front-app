@@ -9,12 +9,13 @@ import { ToastComponent } from './componentes/toast/toast.component';
 import { RouterModule } from '@angular/router';
 import { PaginaNaoEncontradaComponent } from './componentes/pagina-nao-encontrada/pagina-nao-encontrada.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MoneyHttpInterceptor } from './servicos/money-http-interceptor';
+import { AcessoNaoPermitidoComponent } from './componentes/acesso-nao-permitido/acesso-nao-permitido.component';
+import { MoneyHttpInterceptor } from './interceptors/money-http-interceptor';
 
 
 
 @NgModule({
-  declarations: [NavbarComponent, ModalConfirmacaoComponent, ToastComponent, PaginaNaoEncontradaComponent, LoginComponent],
+  declarations: [NavbarComponent, ModalConfirmacaoComponent, ToastComponent, PaginaNaoEncontradaComponent, LoginComponent, AcessoNaoPermitidoComponent],
   imports: [
     CommonModule,
     MaterialModule,

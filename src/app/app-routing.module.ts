@@ -7,6 +7,7 @@ import { PessoaPesquisaComponent } from './modules/pessoa/pessoa-pesquisa/pessoa
 import { PessoaCadastroComponent } from './modules/pessoa/pessoa-cadastro/pessoa-cadastro.component';
 import { PaginaNaoEncontradaComponent } from './core/componentes/pagina-nao-encontrada/pagina-nao-encontrada.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { AcessoNaoPermitidoComponent } from './core/componentes/acesso-nao-permitido/acesso-nao-permitido.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'pessoas', component: PessoaPesquisaComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_PESQUISAR_PESSOA'] } },
   { path: 'pessoa/nova', component: PessoaCadastroComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_CADASTRAR_PESSOA'] } },
   { path: 'pessoa/:id', component: PessoaCadastroComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_ATUALIZAR_PESSOA'] } },
+  { path: 'acesso-negado', component: AcessoNaoPermitidoComponent },
   { path: 'pagina-nao-encontrada', component: PaginaNaoEncontradaComponent },
   { path: '**', redirectTo: 'pagina-nao-encontrada' }
 ];
